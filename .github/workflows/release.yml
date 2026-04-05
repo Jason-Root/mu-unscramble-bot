@@ -50,7 +50,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout --orphan update-files
-          Copy-Item -LiteralPath (Join-Path $publishSource "*") -Destination $publishRoot -Recurse -Force
+          if (-not (Test-Path $publishSource)) {
+            throw "Update publish source was not created: $publishSource"
+          }
+          Copy-Item -Path (Join-Path $publishSource "*") -Destination $publishRoot -Recurse -Force
           New-Item -ItemType File -Path ".nojekyll" | Out-Null
           git add -A
           git commit -m "Publish file update manifest for v$version"
