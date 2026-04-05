@@ -48,7 +48,7 @@ class UpdateManifestFile:
     path: str
     sha256: str
     size: int
-    asset_name: str
+    asset_name: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -155,7 +155,7 @@ def fetch_release_manifest(result: UpdateCheckResult, *, timeout_seconds: float 
             size = max(0, int(size_value))
         except Exception:
             size = 0
-        if not path or not sha256 or not asset_name:
+        if not path or not sha256:
             continue
         files.append(UpdateManifestFile(path=path, sha256=sha256, size=size, asset_name=asset_name))
 
@@ -240,6 +240,8 @@ def prepare_file_update(result: UpdateCheckResult, *, timeout_seconds: float = 4
 
     for entry in changed_files:
         asset = asset_map.get(entry.asset_name)
+        if entry.size == 0 or not entry.asset_name:
+            continue
         if asset is None:
             raise RuntimeError(f"Update asset missing from the release: {entry.asset_name}")
         destination = download_root / Path(*entry.path.split("/"))
@@ -554,8 +556,13 @@ def _build_apply_file_update_script(
                 if (-not (Test-Path -LiteralPath $targetParent)) {{
                     New-Item -ItemType Directory -Path $targetParent -Force | Out-Null
                 }}
-                Copy-Item -LiteralPath $sourcePath -Destination $targetPath -Force
-                Write-UpdateLog "Updated file: $relativePath"
+                if (Test-Path -LiteralPath $sourcePath) {{
+                    Copy-Item -LiteralPath $sourcePath -Destination $targetPath -Force
+                    Write-UpdateLog "Updated file: $relativePath"
+                }} else {{
+                    Set-Content -LiteralPath $targetPath -Value $null -NoNewline
+                    Write-UpdateLog "Created empty file: $relativePath"
+                }}
             }}
 
             if (Test-Path -LiteralPath $manifestPath) {{
