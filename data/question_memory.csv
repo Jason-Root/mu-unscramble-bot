@@ -1,165 +1,165 @@
 first_seen_at,last_seen_at,use_count,round_number,difficulty_level,hint,hint_lookup_key,scrambled_word,answer,answer_letters,source_method,confidence
-2026-04-04T10:57:15,2026-04-04T10:57:15,23122090226684526592,6,1,WHO WROTE THE ILIAD AND THE,whowrotetheiliadandthe,rhome,homer,homer,user-corrected,1.000
-2026-04-04T10:59:16,2026-04-04T10:59:16,23122090226684526592,7,,WHAT IS THE FIRST NAME OF THE,whatisthefirstnameofthe,dgrnoo,gordon,gordon,openai:openrouter/free,1.000
-2026-04-04T10:59:34,2026-04-04T10:59:34,23122090226684526592,8,1,WnaT Is The CaPiTal Of ARMenIa,wnatisthecapitalofarmenia,yveenar,yerevan,yerevan,capital-city,0.950
-2026-04-04T10:59:54,2026-04-04T10:59:54,23122090226684526592,8,1,WHAT IS THE GAPITAL OF ARMENIA,whatisthegapitalofarmenia,yveenar,yerevan,yerevan,openai:openrouter/free,1.000
-2026-04-04T11:25:45,2026-04-04T11:26:21,92488360906738106368,4,1,WHICH PLATFORM IS WDELY USED FOR MUSICSTREAMING? MuSIC STREAMNG,whichplatformiswdelyusedformusicstreamingmusicstreamng,ptisfoy,spotify,spotify,observed-guess,1.000
-2026-04-04T11:26:55,2026-04-04T11:26:55,23122090226684526592,5,1,WHICH BIRD LAYS EGGs N OTHER BIROS,whichbirdlayseggsnotherbiros,cooukc,cuckoo,cuckoo,openai:openrouter/free,1.000
-2026-04-04T11:30:50,2026-04-04T11:30:50,46244180453369053184,8,1,WHATMICROSCOPICORGANISMCAN Diffcuity Lve: 1 HImt: WAT MCROSCOPIC ORGANSM CAN CAUSEILLNESSORAIDDIGESTION? Cause llness or Aid digestion,whatmicroscopicorganismcandiffcuitylve1himtwatmcroscopicorgansmcancauseillnessoraiddigestioncausellnessoraiddigestion,crebitaa,bacteria,bacteria,observed-guess,1.000
-2026-04-04T11:31:07,2026-04-04T11:31:19,46244180453369053184,8,1,WHaT MCROSCOPIC ORGANSM CAN CAUSEILLNESSORAIDDIGESTION,whatmcroscopicorgansmcancauseillnessoraiddigestion,crebitaa,bacteria,bacteria,observed-guess,1.000
-2026-04-04T10:21:51,2026-04-04T11:46:36,92488360906738106368,5,1,WHaT Is THE CaPiTAl OF BOTSWANa,whatisthecapitalofbotswana,eoarobng,gaborone,gaborone,capital-city,0.950
-2026-04-04T11:27:14,2026-04-04T11:46:36,138732541360107159552,5,,WHICH BIRD LAYS EGGS IN OTHER BIRDS NESTS,whichbirdlayseggsinotherbirdsnests,cooukc,cuckoo,cuckoo,anagram,0.910
-2026-04-04T11:51:06,2026-04-04T11:51:25,69366270680053579776,1,1,WHATDEVICEMEASURESTEMPERATURE,whatdevicemeasurestemperature,mrheoeettmr,thermometer,thermometer,anagram,0.910
-2026-04-04T11:53:28,2026-04-04T11:53:28,23122090226684526592,3,1,WHICHPOKEMONEVOLVESFROM,whichpokemonevolvesfrom,ardcahirz,charizard,charizard,anagram,0.910
-2026-04-04T11:55:50,2026-04-04T11:55:59,46244180453369053184,5,1,WHICHPLATFORMISPRIMARILYUSEDFOR PHOTOSHARING,whichplatformisprimarilyusedforphotosharing,mnatraisg,instagram,instagram,anagram,0.910
-2026-04-04T11:56:56,2026-04-04T11:58:05,69366270680053579776,6,,WHATGOLDENBALLENDSAQUIDDITCH MATCHWHENCAUGHT？,whatgoldenballendsaquidditchmatchwhencaught,shncit,snitch,snitch,observed-guess,1.000
-2026-04-04T11:59:05,2026-04-04T11:59:19,46244180453369053184,7,1,WHICHBATTLEROYALEGAMEISSETIN THETITANFALLUNIVERSE,whichbattleroyalegameissetinthetitanfalluniverse,apxe,apex,apex,anagram,0.910
-2026-04-04T12:00:18,2026-04-04T12:00:43,69366270680053579776,8,1,WHICHCHINESECOMPANYMAKES THINKPADLAPTOPS,whichchinesecompanymakesthinkpadlaptops,oonvel,lenovo,lenovo,anagram:ranked,0.840
-2026-04-04T12:21:17,2026-04-04T12:21:22,46244180453369053184,1,1,WHATISTHECAPITALTERRITORYOF,whatisthecapitalterritoryof,ehdli,delhi,delhi,anagram:ranked,0.840
-2026-04-04T12:24:50,2026-04-04T12:24:59,46244180453369053184,4,1,WHATISMASSDIVIDEDBYVOLUME,whatismassdividedbyvolume,instedy,density,density,openai:openrouter/free,1.000
-2026-04-04T12:25:48,2026-04-04T12:25:48,23122090226684526592,5,1,WHATISTHECAPITALOFFLORIDA,whatisthecapitalofflorida,asatlealesh,tallahassee,tallahassee,anagram,0.910
-2026-04-04T12:27:31,2026-04-04T12:27:46,46244180453369053184,6,1,WHATISTHEHOLLOWCAUSEDBYA METEORITECALLED,whatisthehollowcausedbyameteoritecalled,erarct,crater,crater,openai:openrouter/free,1.000
-2026-04-04T12:29:38,2026-04-04T12:30:02,92488360906738106368,8,1,WHOLEDTHEFIRSTEXPEDITIONTO CIRCUMNAVIGATETHEGLOBE,wholedthefirstexpeditiontocircumnavigatetheglobe,malgnela,magellan,magellan,anagram,0.910
-2026-04-04T12:51:04,2026-04-04T12:51:18,46244180453369053184,1,1,WHICHBIGCATISNATIVETOTHE,whichbigcatisnativetothe,ugajra,jaguar,jaguar,anagram,0.910
-2026-04-04T12:52:18,2026-04-04T12:52:26,46244180453369053184,2,1,WHICHCANALCONNECTSTHEATLANTIC ANDPACIFICOCEANS,whichcanalconnectstheatlanticandpacificoceans,apaman,panama,panama,anagram:ranked,0.840
-2026-04-04T12:53:25,2026-04-04T12:53:38,46244180453369053184,3,1,WHATISASEVERESNOWSTORMWITH STRONGWINDSCALLED,whatisaseveresnowstormwithstrongwindscalled,idzrlzab,blizzard,blizzard,anagram,0.910
-2026-04-04T12:54:38,2026-04-04T12:54:43,46244180453369053184,4,,WHOFORMULATEDTHELAWSOFMOTION,whoformulatedthelawsofmotion,nonetw,newton,newton,anagram,0.910
-2026-04-04T12:55:58,2026-04-04T12:55:58,23122090226684526592,5,1,WHATNATURALSATELLITEORBITS,whatnaturalsatelliteorbits,mnoo,moon,moon,openai:openrouter/free,1.000
-2026-04-04T10:29:40,2026-04-04T12:56:58,69366270680053579776,6,1,WHICHAPPFEATURESDISAPPEARING MESSAGESANDFILTERS,whichappfeaturesdisappearingmessagesandfilters,phntacas,snapchat,snapchat,anagram,0.910
-2026-04-04T12:57:59,2026-04-04T12:57:59,23122090226684526592,7,1,WHICHLARGEMAMMALWASHUNTED NEARLYTOEXTINCTIONINAMERICA,whichlargemammalwashuntednearlytoextinctioninamerica,abuolff,buffalo,buffalo,anagram,0.910
-2026-04-04T13:21:16,2026-04-04T13:21:27,46244180453369053184,1,1,WHICHANIMALISFAMOUSFORBEING EXTREMELYSLOW,whichanimalisfamousforbeingextremelyslow,hstol,sloth,sloth,openai:openrouter/free,1.000
-2026-04-04T13:22:09,2026-04-04T13:22:18,69366270680053579776,2,1,WHICHOSISDEVELOPEDBYMICROSOFT,whichosisdevelopedbymicrosoft,dwiowsn,windows,windows,anagram,0.910
-2026-04-04T13:23:12,2026-04-04T13:23:12,23122090226684526592,3,1,WHICHROMANLEADERWAS ASSASSINATEDONTHEIDESOFMARCH,whichromanleaderwasassassinatedontheidesofmarch,eacasr,caesar,caesar,anagram:ranked,0.840
-2026-04-04T13:24:32,2026-04-04T13:24:32,23122090226684526592,4,1,WHATISTHEBODYSLARGESTORGAN,whatisthebodyslargestorgan,ikns,skin,skin,openai:openrouter/free,1.000
-2026-04-04T13:25:32,2026-04-04T13:25:56,46244180453369053184,5,1,WHICHMARVELHEROISBASEDONA,whichmarvelheroisbasedona,orht,thor,thor,openai:openrouter/free,1.000
-2026-04-04T13:26:26,2026-04-04T13:27:00,115610451133422632960,6,1,WHICHSEACREATUREHASEIGHTARMS,whichseacreaturehaseightarms,tcposou,octopus,octopus,anagram,0.910
-2026-04-04T13:51:05,2026-04-04T13:51:05,23122090226684526592,1,1,WHICHDESERTANIMALSTORESFATINITS,whichdesertanimalstoresfatinits,aceml,camel,camel,anagram:ranked,0.840
-2026-04-04T13:54:03,2026-04-04T13:54:06,46244180453369053184,3,1,WHATISTHECAPITALOFIRELAND,whatisthecapitalofireland,buidnl,dublin,dublin,anagram,0.910
-2026-04-04T13:55:07,2026-04-04T13:55:15,46244180453369053184,4,1,WHATISTHENAMEOFTHEMYTHICAL,whatisthenameofthemythical,pgauess,pegasus,pegasus,anagram,0.910
-2026-04-04T13:57:26,2026-04-04T13:57:37,46244180453369053184,6,1,WHICHMICROSOFTPROGRAMISUSEDFOR SPREADSHEETS,whichmicrosoftprogramisusedforspreadsheets,elecx,excel,excel,anagram,0.910
-2026-04-04T13:58:36,2026-04-04T13:58:58,46244180453369053184,7,1,WHATISTHECAPITALOFETHIOPIA,whatisthecapitalofethiopia,daadaibsba,addisababa,addisababa,anagram,0.910
-2026-04-04T14:00:01,2026-04-04T14:00:01,23122090226684526592,8,1,WHICHSEARCHENGINEISTHEMOST,whichsearchengineisthemost,loeggo,google,google,anagram,0.910
-2026-04-04T14:21:13,2026-04-04T14:21:31,46244180453369053184,1,1,WHOISTHEMAINPOKEMONTRAINERIN,whoisthemainpokemontrainerin,ahs,ash,ash,openai:openrouter/free,1.000
-2026-04-04T14:22:18,2026-04-04T14:22:18,23122090226684526592,2,1,WHICHSPINYEGG-LAYINGMAMMALIS RELATEDTOTHEPLATYPUS,whichspinyegglayingmammalisrelatedtotheplatypus,icahned,echidna,echidna,openai:openrouter/free,1.000
-2026-04-04T14:26:50,2026-04-04T14:26:50,23122090226684526592,4,1,WHICHCITYISHOMETOTHECOLOSSEUM,whichcityishometothecolosseum,erom,rome,rome,openai:openrouter/free,1.000
-2026-04-04T14:27:39,2026-04-04T14:27:39,23122090226684526592,5,1,WHICHORGANCONTROLSTHENERVOUS,whichorgancontrolsthenervous,rbain,brain,brain,openai:openrouter/free,1.000
-2026-04-04T14:28:25,2026-04-04T14:28:31,46244180453369053184,6,,WHICHVIDEOGAMEFRANCHISEFEATURES LINKANDAPRINCESS,whichvideogamefranchisefeatureslinkandaprincess,ladez,zelda,zelda,anagram:ranked,0.840
-2026-04-04T14:30:54,2026-04-04T14:30:54,23122090226684526592,8,1,WHICHISTHELIGHTESTELEMENT,whichisthelightestelement,ryoedgnh,hydrogen,hydrogen,anagram,0.910
-2026-04-04T14:51:04,2026-04-04T14:51:04,23122090226684526592,1,,WHICHSTUDENTISKNOWNFORHER INTELLIGENCEANDLOYALTY,whichstudentisknownforherintelligenceandloyalty,homireen,hermione,hermione,anagram:ranked,0.840
-2026-04-04T14:53:44,2026-04-04T14:53:44,23122090226684526592,3,,WHICHAUSTRALIANCITYISKNOWNFOR CULTUREANDARTS,whichaustraliancityisknownforcultureandarts,eoubemnlr,melbourne,melbourne,anagram,0.910
-2026-04-04T14:56:21,2026-04-04T14:56:24,46244180453369053184,5,1,WHICHCITYWASTHEBIRTHPLACEOF,whichcitywasthebirthplaceof,tanhes,athens,athens,anagram:ranked,0.840
-2026-04-04T14:57:15,2026-04-04T14:57:20,46244180453369053184,6,1,WHATNEGATIVELYCHARGEDPARTICLE ORBITSANATOM,whatnegativelychargedparticleorbitsanatom,etroceln,electron,electron,anagram,0.910
-2026-04-04T14:59:35,2026-04-04T14:59:35,23122090226684526592,8,1,WHATISTHESMALLESTUNITOFMATTER,whatisthesmallestunitofmatter,toam,atom,atom,openai:openrouter/free,1.000
-2026-04-04T15:21:03,2026-04-04T15:21:13,46244180453369053184,1,1,WHATDEVICEDIRECTSTRAFFICBETWEEN,whatdevicedirectstrafficbetween,euortr,router,router,anagram:ranked,0.840
-2026-04-04T15:22:11,2026-04-04T15:22:22,46244180453369053184,2,1,WHATISTHECAPITALOFCOLORADO,whatisthecapitalofcolorado,erndve,denver,denver,anagram:ranked,0.840
-2026-04-04T10:55:51,2026-04-04T15:23:19,69366270680053579776,5,1,WHICHMESSAGINGAPPISKNOWNFOR STRONGENCRYPTION,whichmessagingappisknownforstrongencryption,ialngs,signal,signal,user-corrected,1.000
-2026-04-04T15:27:12,2026-04-04T15:27:12,23122090226684526592,6,1,WHATGROUPOFTISSUESPERFORMSA TASKINTHEBODY,whatgroupoftissuesperformsataskinthebody,nraog,organ,organ,openai:openrouter/free,1.000
-2026-04-04T15:51:10,2026-04-04T15:51:30,46244180453369053184,1,1,WHICHJAPANESECOMPANYMAKES,whichjapanesecompanymakes,yson,sony,sony,openai:openrouter/free,1.000
-2026-04-04T15:52:08,2026-04-04T15:52:08,23122090226684526592,2,1,WHICHWITCHERHUNTSMONSTERSFOR,whichwitcherhuntsmonstersfor,reaglt,geralt,geralt,anagram,0.910
-2026-04-04T15:55:30,2026-04-04T15:55:39,46244180453369053184,4,1,WHATISALARGEWAVECAUSEDBYAN UNDERWATEREARTHQUAKE,whatisalargewavecausedbyanunderwaterearthquake,iuamnst,tsunami,tsunami,anagram:ranked,0.840
-2026-04-04T15:56:48,2026-04-04T15:56:52,46244180453369053184,5,1,WHATVENOMOUSSNAKEFLARESITS,whatvenomoussnakeflaresits,cboar,cobra,cobra,anagram:ranked,0.840
-2026-04-04T15:57:45,2026-04-04T15:57:45,23122090226684526592,6,1,WHATISTHECAPITALOFSYRIA,whatisthecapitalofsyria,dsamsauc,damascus,damascus,anagram,0.910
-2026-04-04T16:00:31,2026-04-04T16:00:31,23122090226684526592,8,1,WHICHSHOWFEATURESADELIVERY,whichshowfeaturesadelivery,autrafum,futurama,futurama,anagram,0.910
-2026-04-04T16:21:03,2026-04-04T16:21:22,46244180453369053184,1,1,WHICHSERIESFOLLOWSACHEMISTRY TEACHERTURNEDDRUGKINGPIN,whichseriesfollowsachemistryteacherturneddrugkingpin,bdbienkraag,breakingbad,breakingbad,anagram,0.910
-2026-04-04T16:24:04,2026-04-04T16:24:11,46244180453369053184,3,1,WHICHGAMELETSPLAYERSBUILDWITH BLOCKSINA3DWORLD,whichgameletsplayersbuildwithblocksina3dworld,tancemirf,minecraft,minecraft,anagram,0.910
-2026-04-04T16:25:10,2026-04-04T16:25:10,23122090226684526592,4,1,WHATISTHECAPITALOFCHAD,whatisthecapitalofchad,danjamen,ndjamena,ndjamena,anagram,0.910
-2026-04-04T16:26:46,2026-04-04T16:26:54,46244180453369053184,5,1,"WHATISASYSTEMOFSTARS,GAS,AND DUSTINSPACECALLED",whatisasystemofstarsgasanddustinspacecalled,lyagxa,galaxy,galaxy,anagram,0.910
-2026-04-04T16:27:56,2026-04-04T16:27:56,23122090226684526592,6,1,WHICHMARVELANTIHEROISKNOWNFOR BREAKINGTHEFOURTHWALL,whichmarvelantiheroisknownforbreakingthefourthwall,eddplaoo,deadpool,deadpool,anagram,0.910
-2026-04-04T16:29:05,2026-04-04T16:51:32,46244180453369053184,7,1,WHICHGITREPOSITORYISSIMILARTO GITHUBANDOFFERSCI/CD,whichgitrepositoryissimilartogithubandofferscicd,gibat,gitlab,gitlab,anagram,0.910
-2026-04-04T12:23:06,2026-04-04T16:54:31,69366270680053579776,1,1,WHATISTHEMOSTPOPULOUSCITYIN,whatisthemostpopulouscityin,gasol,lagos,lagos,observed-guess,1.000
-2026-04-04T16:56:58,2026-04-04T16:56:58,23122090226684526592,3,1,WHICHBIRDISTHESYMBOLOFTHE,whichbirdisthesymbolofthe,gelae,eagle,eagle,anagram:ranked,0.840
-2026-04-04T16:58:03,2026-04-04T16:58:32,115610451133422632960,4,,WHOFOUNDEDBUDDHISM,whofoundedbuddhism,dabhdu,buddha,buddha,observed-guess,1.000
-2026-04-04T17:00:20,2026-04-04T17:01:15,161854631586791686144,6,1,WHATISTHECAPITALOFTOGO,whatisthecapitaloftogo,omel,lome,lome,observed-guess,1.000
-2026-04-04T14:58:27,2026-04-04T17:02:15,115610451133422632960,7,1,WHICHPROFESSORTEACHESPOTIONS ANDLOVESLILYPOTTER,whichprofessorteachespotionsandloveslilypotter,sanep,snape,snape,observed-guess,1.000
-2026-04-04T13:56:13,2026-04-04T17:03:20,184976721813476212736,8,1,WHICHCANADIANCITYSHARESITSNAME WITHAPROVINCE,whichcanadiancitysharesitsnamewithaprovince,eeuqcb,quebec,quebec,anagram:ranked,0.840
-2026-04-04T17:21:04,2026-04-04T17:21:04,23122090226684526592,1,1,WHICHINSECTGOESTHROUGH METAMORPHOSIS,whichinsectgoesthroughmetamorphosis,eutftlrby,butterfly,butterfly,anagram:ranked,0.840
-2026-04-04T17:22:43,2026-04-04T17:22:54,46244180453369053184,2,1,WHICHPLANETISTHELARGESTINOUR,whichplanetisthelargestinour,pijtrue,jupiter,jupiter,anagram,0.910
-2026-04-04T17:24:18,2026-04-04T17:24:18,23122090226684526592,3,1,WHATPOSITIVELYCHARGEDPARTICLEIS INANATOMSNUCLEUS,whatpositivelychargedparticleisinanatomsnucleus,npoort,proton,proton,openai:openrouter/free,1.000
-2026-04-04T16:22:21,2026-04-04T17:25:21,69366270680053579776,4,1,WHICHSPORTISPLAYEDONFLYING,whichsportisplayedonflying,duqiithcd,quidditch,quidditch,observed-guess,1.000
-2026-04-04T12:28:32,2026-04-04T17:26:23,138732541360107159552,5,1,WHICHMESSAGINGAPPISMOSTUSEDIN,whichmessagingappismostusedin,ahecwt,wechat,wechat,anagram:ranked,0.840
-2026-04-04T17:27:31,2026-04-04T17:27:31,23122090226684526592,6,1,WHICHGREEKGODISASSOCIATEDWITH,whichgreekgodisassociatedwith,apollo,apollo,apollo,anagram,0.910
-2026-04-04T17:29:52,2026-04-04T17:30:53,46244180453369053184,8,1,WHATTERMDESCRIBESSTORINGDATAON REMOTESERVERS,whattermdescribesstoringdataonremoteservers,ulcdo,cloud,cloud,openai:openrouter/free,1.000
-2026-04-04T17:51:05,2026-04-04T17:51:10,46244180453369053184,1,1,WHICHAPPBECAMEPOPULARFORVIDEO CALLSDURINGTHEPANDEMIC,whichappbecamepopularforvideocallsduringthepandemic,mzoo,zoom,zoom,anagram:ranked,0.840
-2026-04-04T17:52:07,2026-04-04T17:52:13,46244180453369053184,2,1,WHICHRIDE-SHARINGAPPCOMPETES WITHUBERINTHEUS,whichridesharingappcompeteswithuberintheus,lytf,lyft,lyft,anagram,0.910
-2026-04-04T17:53:14,2026-04-04T17:53:14,23122090226684526592,3,1,WHATISTHECAPITALOFWASHINGTON,whatisthecapitalofwashington,aympoil,olympia,olympia,anagram,0.910
-2026-04-04T12:23:41,2026-04-04T17:55:04,92488360906738106368,4,1,WHATSPACEROCKBURNSINEARTHS,whatspacerockburnsinearths,temero,meteor,meteor,observed-guess,1.000
-2026-04-04T17:56:01,2026-04-04T17:56:01,23122090226684526592,5,,WHICHPOKEMONISCONSIDEREDTHEGOD OFALLPOKEMON,whichpokemonisconsideredthegodofallpokemon,csearu,saucer,saucer,anagram:ranked,0.840
-2026-04-04T15:24:32,2026-04-04T18:05:21,69366270680053579776,7,1,WHOISCREDITEDWITHDISCOVERINGTHE,whoiscreditedwithdiscoveringthe,uucombls,columbus,columbus,anagram,0.910
-2026-04-04T11:52:27,2026-04-04T18:21:02,69366270680053579776,1,1,WHICHPLANETISKNOWNASTHERED,whichplanetisknownasthered,masr,mars,mars,anagram:seeded,0.820
-2026-04-04T17:28:32,2026-04-04T18:24:24,69366270680053579776,3,1,WHICHSERVICEDELIVERSFOODFROM,whichservicedeliversfoodfrom,odrhsaod,doordash,doordash,anagram,0.910
-2026-04-04T18:25:41,2026-04-04T18:25:41,23122090226684526592,4,1,WHATISTHECAPITALOFGHANA,whatisthecapitalofghana,racca,accra,accra,anagram,0.910
-2026-04-04T18:27:21,2026-04-04T18:27:21,23122090226684526592,5,1,WHICHMESSAGINGTOOLISPOPULARIN BUSINESSENVIRONMENTS,whichmessagingtoolispopularinbusinessenvironments,icksa,sakic,sakic,anagram,0.910
-2026-04-04T18:29:44,2026-04-04T18:29:44,23122090226684526592,6,1,WHATISTHECAPITALOFTHECENTRAL AFRICANREPUBLIC,whatisthecapitalofthecentralafricanrepublic,unagib,bangui,bangui,anagram:ranked,0.840
-2026-04-04T18:32:25,2026-04-04T18:32:25,23122090226684526592,8,1,WHATISTHECAPITALOFIRAN,whatisthecapitalofiran,hertna,tehran,tehran,anagram:ranked,0.840
-2026-04-04T15:29:25,2026-04-04T18:51:14,138732541360107159552,2,1,WHICHSERVER-SIDESCRIPTING LANGUAGEPOWERSMANYWEBSITES,whichserversidescriptinglanguagepowersmanywebsites,hpp,php,php,anagram:ranked,0.840
-2026-04-04T18:52:21,2026-04-04T18:52:21,23122090226684526592,2,,WHICHPLUMBERISNINTENDOSMOST FAMOUSCHARACTER,whichplumberisnintendosmostfamouscharacter,oiamr,mario,mario,openai:openrouter/free,1.000
-2026-04-04T18:54:59,2026-04-04T18:54:59,23122090226684526592,4,1,WHICHFILMISTHEFINALCHAPTEROF WOLVERINESSTORY,whichfilmisthefinalchapterofwolverinesstory,nogal,logan,logan,openai:openrouter/free,1.000
-2026-04-04T18:55:39,2026-04-04T18:59:44,46244180453369053184,5,,WHICHSHOPPINGSITEISCOMMONIN SOUTHEASTASIA,whichshoppingsiteiscommoninsoutheastasia,zladaa,lazada,lazada,anagram,0.910
-2026-04-04T19:00:43,2026-04-04T19:00:53,46244180453369053184,6,1,WHICHBROWSERISDEVELOPEDBY,whichbrowserisdevelopedby,ceomhr,chrome,chrome,anagram,0.910
-2026-04-04T19:01:53,2026-04-04T19:02:01,46244180453369053184,7,1,WHATISTHECAPITALOFHUNGARY,whatisthecapitalofhungary,uebdastp,budapest,budapest,anagram,0.910
-2026-04-04T19:03:03,2026-04-04T19:03:03,23122090226684526592,8,1,WHICHMYTHICALCREATUREHASTHE HEADOFABULLANDBODYOFAMAN,whichmythicalcreaturehastheheadofabullandbodyofaman,naroitmu,minotaur,minotaur,anagram,0.910
-2026-04-04T16:55:33,2026-04-04T19:22:43,69366270680053579776,2,,WHICHCANADIANCITYISTHEMOST,whichcanadiancityisthemost,onrotot,toronto,toronto,anagram,0.910
-2026-04-04T19:23:43,2026-04-04T19:24:33,46244180453369053184,3,1,WHICHGITPLATFORMISDEVELOPEDBY,whichgitplatformisdevelopedby,ktutibcbe,bitbucket,bitbucket,observed-guess,1.000
-2026-04-04T12:59:08,2026-04-04T19:25:38,92488360906738106368,4,1,WHATISTHECAPITALOFPORTUGAL,whatisthecapitalofportugal,sniobl,lisbon,lisbon,anagram:ranked,0.840
-2026-04-04T18:31:10,2026-04-04T19:26:38,69366270680053579776,5,1,WHATSPORTISPLAYEDONICEWITHA,whatsportisplayedonicewitha,ckyoeh,hockey,hockey,anagram:ranked,0.840
-2026-04-04T19:30:09,2026-04-04T19:30:13,46244180453369053184,8,1,WHICHINSECTMAKESHONEY,whichinsectmakeshoney,bee,bee,bee,anagram:ranked,0.840
-2026-04-04T13:52:29,2026-04-04T19:49:43,115610451133422632960,3,1,WHATISTHECAPITALOFWALES,whatisthecapitalofwales,dficfar,cardiff,cardiff,observed-guess,1.000
-2026-04-04T19:53:21,2026-04-04T19:53:21,23122090226684526592,2,1,WHATISTHECAPITALOFNEWYORK,whatisthecapitalofnewyork,yblnaa,albany,albany,observed-guess,1.000
-2026-04-04T19:55:26,2026-04-04T19:55:26,46244180453369053184,3,1,WHOIMPROVEDTHETELESCOPEAND SUPPORTEDHELIOCENTRISM,whoimprovedthetelescopeandsupportedheliocentrism,ogleila,galileo,galileo,observed-guess,1.000
-2026-04-04T19:57:14,2026-04-04T19:57:14,23122090226684526592,4,1,WHICHMARINECREATURESTICKSTO BOATSANDROCKS,whichmarinecreaturestickstoboatsandrocks,ranlecba,barnacle,barnacle,observed-guess,1.000
-2026-04-04T20:01:07,2026-04-04T20:01:15,69366270680053579776,7,1,WHOISTHEHEADMASTEROFHOGWARTS,whoistheheadmasterofhogwarts,drdbemeluo,dumbledore,dumbledore,observed-guess,1.000
-2026-04-04T20:02:12,2026-04-04T20:02:37,115610451133422632960,8,1,WHICHSHOOTERGAMEISPARTOFTHE COUNTER-STRIKESERIES,whichshootergameispartofthecounterstrikeseries,csgo,csgo,csgo,observed-guess,1.000
-2026-04-04T20:26:57,2026-04-04T20:27:05,69366270680053579776,5,,WHATISTHELONGESTMOUNTAINRANGE INSOUTHAMERICA,whatisthelongestmountainrangeinsouthamerica,eadns,andes,andes,observed-guess,1.000
-2026-04-04T20:29:23,2026-04-04T20:29:23,46244180453369053184,6,1,WHATISTHECAPITALOFRWANDA,whatisthecapitalofrwanda,ilagki,kigali,kigali,observed-guess,1.000
-2026-04-04T20:30:41,2026-04-04T20:30:59,92488360906738106368,7,1,WHATTYPEOFPRECIPITATIONFALLSAS,whattypeofprecipitationfallsas,ihla,hail,hail,observed-guess,1.000
-2026-04-04T20:31:06,2026-04-04T20:31:06,23122090226684526592,7,1,WHATTYPEOFPRECIPITATIONFALLSCS,whattypeofprecipitationfallscs,ihla,hail,hail,observed-guess,1.000
-2026-04-04T18:02:23,2026-04-04T20:32:04,138732541360107159552,8,1,WHATISTHECAPITALOFNIGER,whatisthecapitalofniger,anemyi,niamey,niamey,observed-guess,1.000
-2026-04-04T20:52:13,2026-04-04T20:52:13,23122090226684526592,1,1,WHATISTHECAPITALOFJORDAN,whatisthecapitalofjordan,namam,maman,maman,openai:qwen/qwen3.6-plus:free,0.800
-2026-04-04T20:56:50,2026-04-04T20:56:53,69366270680053579776,5,1,WHATMAKESHARRYINVISIBLE,whatmakesharryinvisible,laock,cloak,cloak,observed-guess,1.000
-2026-04-04T20:57:58,2026-04-04T20:58:02,69366270680053579776,6,1,WHOWASTHEFIRSTMANTOWALKON,whowasthefirstmantowalkon,ngorastmr,armstrong,armstrong,observed-guess,1.000
-2026-04-04T20:59:13,2026-04-04T20:59:19,69366270680053579776,7,1,"WHICHPRODUCTIVITYAPPCOMBINES DOCS,TASKS,ANDDATABASES",whichproductivityappcombinesdocstasksanddatabases,oontin,notion,notion,observed-guess,1.000
-2026-04-04T19:59:44,2026-04-04T21:07:45,254342992493529792512,6,1,WHICHFISHSWIMSUPSTREAMTOSPAWN,whichfishswimsupstreamtospawn,snmaol,salmon,salmon,observed-guess,1.000
-2026-04-04T21:22:53,2026-04-04T21:23:06,46244180453369053184,2,1,WHICHSMALLLIZARDISKNOWNFOR CLIMBINGWALLS,whichsmalllizardisknownforclimbingwalls,ekogc,gecko,gecko,observed-guess,1.000
-2026-04-04T21:24:16,2026-04-04T21:24:16,23122090226684526592,3,1,WHICHLANGUAGEISUSEDTOCREATE WEBPAGES,whichlanguageisusedtocreatewebpages,hlmt,html,html,observed-guess,1.000
-2026-04-04T21:25:27,2026-04-04T21:25:27,23122090226684526592,4,1,WHICHBROWSERISDEVELOPED,whichbrowserisdeveloped,firfxoe,firefox,firefox,observed-guess,1.000
-2026-04-04T16:59:17,2026-04-04T21:27:38,92488360906738106368,6,1,WHICHOPEN-SOURCEOPERATINGSYSTEM HASMANYDISTRIBUTIONS,whichopensourceoperatingsystemhasmanydistributions,inulx,linux,linux,observed-guess,1.000
-2026-04-04T21:28:59,2026-04-04T21:28:59,23122090226684526592,7,1,WHICHSUPERHEROWASBITTENBYA RADIOACTIVESPIDER,whichsuperherowasbittenbyaradioactivespider,dpeisnamr,spiderman,spiderman,observed-guess,1.000
-2026-04-04T21:30:17,2026-04-04T21:30:17,23122090226684526592,8,1,WHATISONEOFSOUTHAFRICAS,whatisoneofsouthafricas,triproae,pretoria,pretoria,observed-guess,1.000
-2026-04-04T21:51:10,2026-04-04T21:51:14,46244180453369053184,1,1,WHATFORCEPULLSOBJECTSTOWARD,whatforcepullsobjectstoward,rgaivyt,gravity,gravity,openai:qwen/qwen3.6-plus:free,1.000
-2026-04-04T20:52:40,2026-04-04T21:52:14,115610451133422632960,2,1,WHICHSPORTUSESAHOOPANDBALL,whichsportusesahoopandball,laastekblb,basketball,basketball,observed-guess,1.000
-2026-04-04T19:21:03,2026-04-05T05:21:11,138732541360107159552,1,1,WHICHWEBSITEISMOSTPOPULARFOR VIDEOCONTENT,whichwebsiteismostpopularforvideocontent,bueouyt,youtube,youtube,observed-guess,1.000
-2026-04-05T05:22:29,2026-04-05T05:22:29,23122090226684526592,2,1,WHATISTHEMOSTICONICPOKEMON CHARACTER,whatisthemosticonicpokemoncharacter,ukaciph,pikachu,pikachu,observed-guess,1.000
-2026-04-05T05:23:38,2026-04-05T05:23:38,23122090226684526592,3,1,WHICHMARINEANIMALISKNOWNASTHE KILLERWHALE,whichmarineanimalisknownasthekillerwhale,aroc,orca,orca,observed-guess,1.000
-2026-04-04T18:53:31,2026-04-05T05:26:04,92488360906738106368,5,1,WHICHPLATFORMFEATURESSHORT FORMVIDEOSANDVIRALDANCES,whichplatformfeaturesshortformvideosandviraldances,ikttko,tiktok,tiktok,observed-guess,1.000
-2026-04-05T05:27:32,2026-04-05T05:27:32,23122090226684526592,6,1,WHATISTHECAPITALOFPAKISTAN,whatisthecapitalofpakistan,dsaaabilm,islamabad,islamabad,observed-guess,1.000
-2026-04-05T05:29:10,2026-04-05T05:29:10,23122090226684526592,7,1,WHATISTHECAPITALOFICELAND,whatisthecapitaloficeland,rikayevkj,reykjavik,reykjavik,observed-guess,1.000
-2026-04-05T05:58:55,2026-04-05T05:59:01,17341567670013394944,5,1,WHICHCITYISKNOWNASTHEETERNAL,whichcityisknownastheeternal,meor,rome,rome,observed-guess,1.000
-2026-04-05T06:00:11,2026-04-05T06:00:34,4335391917503348736,6,1,WHICHDARKWiZARDFEAREDBYALLWAS ONCETOMRIDDLE,whichdarkwizardfearedbyallwasoncetomriddle,mteodlvor,voldemort,voldemort,observed-guess,1.000
-2026-04-05T05:30:21,2026-04-05T06:01:15,24567220865852309504,8,1,WHATMOUNTAINERUPTSWITHLAVAAND,whatmountaineruptswithlavaand,olcnvao,volcano,volcano,observed-guess,1.000
-2026-04-05T06:02:30,2026-04-05T06:02:43,541923989687918592,8,1,WHICHANIMALCARRIESITSYOUNGINA,whichanimalcarriesitsyoungina,gnaakoor,kangaroo,kangaroo,observed-guess,1.000
-2026-04-05T06:21:19,2026-04-05T06:21:27,135480997421979648,1,1,WHICHLARGEANIMALSPENDSMUCHOF ITSTIMEINWATER,whichlargeanimalspendsmuchofitstimeinwater,ppohi,hippo,hippo,observed-guess,1.000
-2026-04-05T06:22:31,2026-04-05T06:22:31,22580166236996608,2,1,WHICHPLATFORMALLOWSUSERSTO RENTHOMESFROMOTHERS,whichplatformallowsuserstorenthomesfromothers,arnibb,airbnb,airbnb,observed-guess,1.000
-2026-04-05T06:23:44,2026-04-05T06:23:44,11290083118498304,3,1,WHATFAMOUSSTATUEWASAGIFTFROM FRANCETOTHEUSA,whatfamousstatuewasagiftfromfrancetotheusa,byeilrt,liberty,liberty,observed-guess,1.000
-2026-04-04T21:21:30,2026-04-05T06:24:53,46255470536487551488,1,1,WHICHSCI-FIMOVIEEXPLORESTIME DILATIONANDBLACKHOLES,whichscifimovieexplorestimedilationandblackholes,stleilrrtaen,interstellar,interstellar,observed-guess,1.000
-2026-04-05T06:28:34,2026-04-05T06:28:34,2822520779624576,5,1,WHICHVILLAINSEEKSTHETRIFORCEIN ZELDAGAMES,whichvillainseeksthetriforceinzeldagames,nfnodrago,ganondorf,ganondorf,observed-guess,1.000
-2026-04-05T06:29:58,2026-04-05T06:29:58,1411260389812288,6,1,WHATDEVICEHELPSSEETINY ORGANISMS,whatdevicehelpsseetinyorganisms,csrociopme,microscope,microscope,observed-guess,1.000
-2026-04-05T06:31:04,2026-04-05T06:31:10,1058445292359216,7,,WHICHSUPERHEROTURNSGREENWHEN,whichsuperheroturnsgreenwhen,khul,hulk,hulk,observed-guess,1.000
-2026-04-05T06:32:25,2026-04-05T06:32:30,441018871816340,8,1,WHATISTHECAPITALOFNEWJERSEY? 3minute(s)lefttoenterBloodCastle,whatisthecapitalofnewjersey3minuteslefttoenterbloodcastle,onntrte,trenton,trenton,observed-guess,1.000
-2026-04-05T06:51:43,2026-04-05T06:51:43,10943213717504,1,1,WHICHHOUSEVALUESLOYALTYAND HARDWORK,whichhousevaluesloyaltyandhardwork,fheufuplff,hufflepuff,hufflepuff,observed-guess,1.000
-2026-04-04T14:25:00,2026-04-05T06:52:52,69366281623267297280,5,1,WHICHGAMEFEATURESBATTLEROYALE GAMEPLAYANDDANCES,whichgamefeaturesbattleroyalegameplayanddances,tironeft,fortnite,fortnite,observed-guess,1.000
-2026-04-05T06:54:12,2026-04-05T06:54:12,2735803429376,3,1,WHATISTHECAPITALOFMALI,whatisthecapitalofmali,mkabao,bamako,bamako,observed-guess,1.000
-2026-04-05T06:55:49,2026-04-05T06:55:54,2051852572032,4,1,WHICHSPACEOBJECTHASATAILOFGAS,whichspaceobjecthasatailofgas,ometc,comet,comet,observed-guess,1.000
-2026-04-05T06:57:15,2026-04-05T06:57:15,341975428672,5,1,WHICHSEARCHENGINEEMPHASIZES,whichsearchengineemphasizes,dukcdoukgc,duckduckgo,duckduckgo,observed-guess,1.000
-2026-04-05T06:58:27,2026-04-05T06:58:27,170987714336,6,1,WHATISTHECAPITALOFGUINEA-BISSAU,whatisthecapitalofguineabissau,bsaius,bissau,bissau,observed-guess,1.000
-2026-04-05T06:59:39,2026-04-05T06:59:39,85493857168,7,1,WHICHANIMALEATSEUCALYPTUSLEAVES INAUSTRALIA,whichanimaleatseucalyptusleavesinaustralia,lkaao,koala,koala,observed-guess,1.000
-2026-04-05T07:00:49,2026-04-05T07:00:49,42746928584,8,1,WHATARACHNIDSPINSWEBS,whatarachnidspinswebs,edspri,spider,spider,observed-guess,1.000
-2026-04-04T14:52:31,2026-04-05T07:57:22,46244180462394592816,2,1,WHATISTHECAPITALOFEQUATORIAL,whatisthecapitalofequatorial,maalbo,malabo,malabo,observed-guess,1.000
-2026-04-04T11:54:54,2026-04-05T07:57:41,69366270702617428856,7,1,WHICHFEMALEARCHAEOLOGISTSTARSIN TOMBRAIDER,whichfemalearchaeologiststarsintombraider,alar,lara,lara,observed-guess,1.000
-2026-04-04T21:53:23,2026-04-05T07:58:27,23122090227182065264,3,1,WHICHCHINESEE-COMMERCESITESHIPS WORLDWIDE,whichchineseecommercesiteshipsworldwide,isrpsexeal,aliexpress,aliexpress,observed-guess,1.000
-2026-04-05T08:21:26,2026-04-05T08:21:40,11709552,1,1,WHICHMESSAGINGAPPISOWNEDBY,whichmessagingappisownedby,tapwsaph,whatsapp,whatsapp,observed-guess,1.000
-2026-04-05T05:24:59,2026-04-05T08:22:28,23122090226685502388,4,1,WHATRIVERFLOWSTHROUGHLONDON,whatriverflowsthroughlondon,hemast,thames,thames,observed-guess,1.000
-2026-04-05T07:59:36,2026-04-05T08:22:48,53602397,8,1,WHICHWARRIORISTHEGODOFWAR,whichwarrioristhegodofwar,ktoasr,kratos,kratos,observed-guess,1.000
-2026-04-05T08:23:46,2026-04-05T08:24:31,52539,3,1,WHICHPLANETISKNOWNFORITSDEEP BLUE.COLOR,whichplanetisknownforitsdeepbluecolor,eupnten,neptune,neptune,observed-guess,1.000
-2026-04-05T08:25:41,2026-04-05T08:25:49,2065,4,1,WHICHMETALISCOMMONLYUSEDIN JEWELRY?S,whichmetaliscommonlyusedinjewelrys,eivsrl,silver,silver,observed-guess,1.000
-2026-04-05T08:26:53,2026-04-05T08:28:03,114,5,1,WHICH GREENLIZARD IS OFTEN SEEN IN TROPICALAREAS,whichgreenlizardisoftenseenintropicalareas,nugaai,iguana,iguana,observed-guess,1.000
-2026-04-05T08:28:53,2026-04-05T08:28:53,1,6,1,WHOINVENTEDDYNAMITEANDLATER FUNDEDAFAMOUSPRIZE,whoinventeddynamiteandlaterfundedafamousprize,onebl,nobel,nobel,observed-guess,1.000
+2026-04-04T10:57:15,2026-04-04T10:57:15,87606399917740785664,6,1,WHO WROTE THE ILIAD AND THE,whowrotetheiliadandthe,rhome,homer,homer,user-corrected,1.000
+2026-04-04T10:59:16,2026-04-04T10:59:16,87606399917740785664,7,,WHAT IS THE FIRST NAME OF THE,whatisthefirstnameofthe,dgrnoo,gordon,gordon,openai:openrouter/free,1.000
+2026-04-04T10:59:34,2026-04-04T10:59:34,87606399917740785664,8,1,WnaT Is The CaPiTal Of ARMenIa,wnatisthecapitalofarmenia,yveenar,yerevan,yerevan,capital-city,0.950
+2026-04-04T10:59:54,2026-04-04T10:59:54,87606399917740785664,8,1,WHAT IS THE GAPITAL OF ARMENIA,whatisthegapitalofarmenia,yveenar,yerevan,yerevan,openai:openrouter/free,1.000
+2026-04-04T11:25:45,2026-04-04T11:26:21,350425599670963142656,4,1,WHICH PLATFORM IS WDELY USED FOR MUSICSTREAMING? MuSIC STREAMNG,whichplatformiswdelyusedformusicstreamingmusicstreamng,ptisfoy,spotify,spotify,observed-guess,1.000
+2026-04-04T11:26:55,2026-04-04T11:26:55,87606399917740785664,5,1,WHICH BIRD LAYS EGGs N OTHER BIROS,whichbirdlayseggsnotherbiros,cooukc,cuckoo,cuckoo,openai:openrouter/free,1.000
+2026-04-04T11:30:50,2026-04-04T11:30:50,175212799835481571328,8,1,WHATMICROSCOPICORGANISMCAN Diffcuity Lve: 1 HImt: WAT MCROSCOPIC ORGANSM CAN CAUSEILLNESSORAIDDIGESTION? Cause llness or Aid digestion,whatmicroscopicorganismcandiffcuitylve1himtwatmcroscopicorgansmcancauseillnessoraiddigestioncausellnessoraiddigestion,crebitaa,bacteria,bacteria,observed-guess,1.000
+2026-04-04T11:31:07,2026-04-04T11:31:19,175212799835481571328,8,1,WHaT MCROSCOPIC ORGANSM CAN CAUSEILLNESSORAIDDIGESTION,whatmcroscopicorgansmcancauseillnessoraiddigestion,crebitaa,bacteria,bacteria,observed-guess,1.000
+2026-04-04T10:21:51,2026-04-04T11:46:36,350425599670963142656,5,1,WHaT Is THE CaPiTAl OF BOTSWANa,whatisthecapitalofbotswana,eoarobng,gaborone,gaborone,capital-city,0.950
+2026-04-04T11:27:14,2026-04-04T11:46:36,525638399506444713984,5,,WHICH BIRD LAYS EGGS IN OTHER BIRDS NESTS,whichbirdlayseggsinotherbirdsnests,cooukc,cuckoo,cuckoo,anagram,0.910
+2026-04-04T11:51:06,2026-04-04T11:51:25,262819199753222356992,1,1,WHATDEVICEMEASURESTEMPERATURE,whatdevicemeasurestemperature,mrheoeettmr,thermometer,thermometer,anagram,0.910
+2026-04-04T11:53:28,2026-04-04T11:53:28,87606399917740785664,3,1,WHICHPOKEMONEVOLVESFROM,whichpokemonevolvesfrom,ardcahirz,charizard,charizard,anagram,0.910
+2026-04-04T11:55:50,2026-04-04T11:55:59,175212799835481571328,5,1,WHICHPLATFORMISPRIMARILYUSEDFOR PHOTOSHARING,whichplatformisprimarilyusedforphotosharing,mnatraisg,instagram,instagram,anagram,0.910
+2026-04-04T11:56:56,2026-04-04T11:58:05,262819199753222356992,6,,WHATGOLDENBALLENDSAQUIDDITCH MATCHWHENCAUGHT？,whatgoldenballendsaquidditchmatchwhencaught,shncit,snitch,snitch,observed-guess,1.000
+2026-04-04T11:59:05,2026-04-04T11:59:19,175212799835481571328,7,1,WHICHBATTLEROYALEGAMEISSETIN THETITANFALLUNIVERSE,whichbattleroyalegameissetinthetitanfalluniverse,apxe,apex,apex,anagram,0.910
+2026-04-04T12:00:18,2026-04-04T12:00:43,262819199753222356992,8,1,WHICHCHINESECOMPANYMAKES THINKPADLAPTOPS,whichchinesecompanymakesthinkpadlaptops,oonvel,lenovo,lenovo,anagram:ranked,0.840
+2026-04-04T12:21:17,2026-04-04T12:21:22,175212799835481571328,1,1,WHATISTHECAPITALTERRITORYOF,whatisthecapitalterritoryof,ehdli,delhi,delhi,anagram:ranked,0.840
+2026-04-04T12:24:50,2026-04-04T12:24:59,175212799835481571328,4,1,WHATISMASSDIVIDEDBYVOLUME,whatismassdividedbyvolume,instedy,density,density,openai:openrouter/free,1.000
+2026-04-04T12:25:48,2026-04-04T12:25:48,87606399917740785664,5,1,WHATISTHECAPITALOFFLORIDA,whatisthecapitalofflorida,asatlealesh,tallahassee,tallahassee,anagram,0.910
+2026-04-04T12:27:31,2026-04-04T12:27:46,175212799835481571328,6,1,WHATISTHEHOLLOWCAUSEDBYA METEORITECALLED,whatisthehollowcausedbyameteoritecalled,erarct,crater,crater,openai:openrouter/free,1.000
+2026-04-04T12:29:38,2026-04-04T12:30:02,350425599670963142656,8,1,WHOLEDTHEFIRSTEXPEDITIONTO CIRCUMNAVIGATETHEGLOBE,wholedthefirstexpeditiontocircumnavigatetheglobe,malgnela,magellan,magellan,anagram,0.910
+2026-04-04T12:51:04,2026-04-04T12:51:18,175212799835481571328,1,1,WHICHBIGCATISNATIVETOTHE,whichbigcatisnativetothe,ugajra,jaguar,jaguar,anagram,0.910
+2026-04-04T12:52:18,2026-04-04T12:52:26,175212799835481571328,2,1,WHICHCANALCONNECTSTHEATLANTIC ANDPACIFICOCEANS,whichcanalconnectstheatlanticandpacificoceans,apaman,panama,panama,anagram:ranked,0.840
+2026-04-04T12:53:25,2026-04-04T12:53:38,175212799835481571328,3,1,WHATISASEVERESNOWSTORMWITH STRONGWINDSCALLED,whatisaseveresnowstormwithstrongwindscalled,idzrlzab,blizzard,blizzard,anagram,0.910
+2026-04-04T12:54:38,2026-04-04T12:54:43,175212799835481571328,4,,WHOFORMULATEDTHELAWSOFMOTION,whoformulatedthelawsofmotion,nonetw,newton,newton,anagram,0.910
+2026-04-04T12:55:58,2026-04-04T12:55:58,87606399917740785664,5,1,WHATNATURALSATELLITEORBITS,whatnaturalsatelliteorbits,mnoo,moon,moon,openai:openrouter/free,1.000
+2026-04-04T10:29:40,2026-04-04T12:56:58,262819199753222356992,6,1,WHICHAPPFEATURESDISAPPEARING MESSAGESANDFILTERS,whichappfeaturesdisappearingmessagesandfilters,phntacas,snapchat,snapchat,anagram,0.910
+2026-04-04T12:57:59,2026-04-04T12:57:59,87606399917740785664,7,1,WHICHLARGEMAMMALWASHUNTED NEARLYTOEXTINCTIONINAMERICA,whichlargemammalwashuntednearlytoextinctioninamerica,abuolff,buffalo,buffalo,anagram,0.910
+2026-04-04T13:21:16,2026-04-04T13:21:27,175212799835481571328,1,1,WHICHANIMALISFAMOUSFORBEING EXTREMELYSLOW,whichanimalisfamousforbeingextremelyslow,hstol,sloth,sloth,openai:openrouter/free,1.000
+2026-04-04T13:22:09,2026-04-04T13:22:18,262819199753222356992,2,1,WHICHOSISDEVELOPEDBYMICROSOFT,whichosisdevelopedbymicrosoft,dwiowsn,windows,windows,anagram,0.910
+2026-04-04T13:23:12,2026-04-04T13:23:12,87606399917740785664,3,1,WHICHROMANLEADERWAS ASSASSINATEDONTHEIDESOFMARCH,whichromanleaderwasassassinatedontheidesofmarch,eacasr,caesar,caesar,anagram:ranked,0.840
+2026-04-04T13:24:32,2026-04-04T13:24:32,87606399917740785664,4,1,WHATISTHEBODYSLARGESTORGAN,whatisthebodyslargestorgan,ikns,skin,skin,openai:openrouter/free,1.000
+2026-04-04T13:25:32,2026-04-04T13:25:56,175212799835481571328,5,1,WHICHMARVELHEROISBASEDONA,whichmarvelheroisbasedona,orht,thor,thor,openai:openrouter/free,1.000
+2026-04-04T13:26:26,2026-04-04T13:27:00,438031999588703928320,6,1,WHICHSEACREATUREHASEIGHTARMS,whichseacreaturehaseightarms,tcposou,octopus,octopus,anagram,0.910
+2026-04-04T13:51:05,2026-04-04T13:51:05,87606399917740785664,1,1,WHICHDESERTANIMALSTORESFATINITS,whichdesertanimalstoresfatinits,aceml,camel,camel,anagram:ranked,0.840
+2026-04-04T13:54:03,2026-04-04T13:54:06,175212799835481571328,3,1,WHATISTHECAPITALOFIRELAND,whatisthecapitalofireland,buidnl,dublin,dublin,anagram,0.910
+2026-04-04T13:55:07,2026-04-04T13:55:15,175212799835481571328,4,1,WHATISTHENAMEOFTHEMYTHICAL,whatisthenameofthemythical,pgauess,pegasus,pegasus,anagram,0.910
+2026-04-04T13:57:26,2026-04-04T13:57:37,175212799835481571328,6,1,WHICHMICROSOFTPROGRAMISUSEDFOR SPREADSHEETS,whichmicrosoftprogramisusedforspreadsheets,elecx,excel,excel,anagram,0.910
+2026-04-04T13:58:36,2026-04-04T13:58:58,175212799835481571328,7,1,WHATISTHECAPITALOFETHIOPIA,whatisthecapitalofethiopia,daadaibsba,addisababa,addisababa,anagram,0.910
+2026-04-04T14:00:01,2026-04-04T14:00:01,87606399917740785664,8,1,WHICHSEARCHENGINEISTHEMOST,whichsearchengineisthemost,loeggo,google,google,anagram,0.910
+2026-04-04T14:21:13,2026-04-04T14:21:31,175212799835481571328,1,1,WHOISTHEMAINPOKEMONTRAINERIN,whoisthemainpokemontrainerin,ahs,ash,ash,openai:openrouter/free,1.000
+2026-04-04T14:22:18,2026-04-04T14:22:18,87606399917740785664,2,1,WHICHSPINYEGG-LAYINGMAMMALIS RELATEDTOTHEPLATYPUS,whichspinyegglayingmammalisrelatedtotheplatypus,icahned,echidna,echidna,openai:openrouter/free,1.000
+2026-04-04T14:26:50,2026-04-04T14:26:50,87606399917740785664,4,1,WHICHCITYISHOMETOTHECOLOSSEUM,whichcityishometothecolosseum,erom,rome,rome,openai:openrouter/free,1.000
+2026-04-04T14:27:39,2026-04-04T14:27:39,87606399917740785664,5,1,WHICHORGANCONTROLSTHENERVOUS,whichorgancontrolsthenervous,rbain,brain,brain,openai:openrouter/free,1.000
+2026-04-04T14:28:25,2026-04-04T14:28:31,175212799835481571328,6,,WHICHVIDEOGAMEFRANCHISEFEATURES LINKANDAPRINCESS,whichvideogamefranchisefeatureslinkandaprincess,ladez,zelda,zelda,anagram:ranked,0.840
+2026-04-04T14:30:54,2026-04-04T14:30:54,87606399917740785664,8,1,WHICHISTHELIGHTESTELEMENT,whichisthelightestelement,ryoedgnh,hydrogen,hydrogen,anagram,0.910
+2026-04-04T14:51:04,2026-04-04T14:51:04,87606399917740785664,1,,WHICHSTUDENTISKNOWNFORHER INTELLIGENCEANDLOYALTY,whichstudentisknownforherintelligenceandloyalty,homireen,hermione,hermione,anagram:ranked,0.840
+2026-04-04T14:53:44,2026-04-04T14:53:44,87606399917740785664,3,,WHICHAUSTRALIANCITYISKNOWNFOR CULTUREANDARTS,whichaustraliancityisknownforcultureandarts,eoubemnlr,melbourne,melbourne,anagram,0.910
+2026-04-04T14:56:21,2026-04-04T14:56:24,175212799835481571328,5,1,WHICHCITYWASTHEBIRTHPLACEOF,whichcitywasthebirthplaceof,tanhes,athens,athens,anagram:ranked,0.840
+2026-04-04T14:57:15,2026-04-04T14:57:20,175212799835481571328,6,1,WHATNEGATIVELYCHARGEDPARTICLE ORBITSANATOM,whatnegativelychargedparticleorbitsanatom,etroceln,electron,electron,anagram,0.910
+2026-04-04T14:59:35,2026-04-04T14:59:35,87606399917740785664,8,1,WHATISTHESMALLESTUNITOFMATTER,whatisthesmallestunitofmatter,toam,atom,atom,openai:openrouter/free,1.000
+2026-04-04T15:21:03,2026-04-04T15:21:13,175212799835481571328,1,1,WHATDEVICEDIRECTSTRAFFICBETWEEN,whatdevicedirectstrafficbetween,euortr,router,router,anagram:ranked,0.840
+2026-04-04T15:22:11,2026-04-04T15:22:22,175212799835481571328,2,1,WHATISTHECAPITALOFCOLORADO,whatisthecapitalofcolorado,erndve,denver,denver,anagram:ranked,0.840
+2026-04-04T10:55:51,2026-04-04T15:23:19,262819199753222356992,5,1,WHICHMESSAGINGAPPISKNOWNFOR STRONGENCRYPTION,whichmessagingappisknownforstrongencryption,ialngs,signal,signal,user-corrected,1.000
+2026-04-04T15:27:12,2026-04-04T15:27:12,87606399917740785664,6,1,WHATGROUPOFTISSUESPERFORMSA TASKINTHEBODY,whatgroupoftissuesperformsataskinthebody,nraog,organ,organ,openai:openrouter/free,1.000
+2026-04-04T15:51:10,2026-04-04T15:51:30,175212799835481571328,1,1,WHICHJAPANESECOMPANYMAKES,whichjapanesecompanymakes,yson,sony,sony,openai:openrouter/free,1.000
+2026-04-04T15:52:08,2026-04-04T15:52:08,87606399917740785664,2,1,WHICHWITCHERHUNTSMONSTERSFOR,whichwitcherhuntsmonstersfor,reaglt,geralt,geralt,anagram,0.910
+2026-04-04T15:55:30,2026-04-04T15:55:39,175212799835481571328,4,1,WHATISALARGEWAVECAUSEDBYAN UNDERWATEREARTHQUAKE,whatisalargewavecausedbyanunderwaterearthquake,iuamnst,tsunami,tsunami,anagram:ranked,0.840
+2026-04-04T15:56:48,2026-04-04T15:56:52,175212799835481571328,5,1,WHATVENOMOUSSNAKEFLARESITS,whatvenomoussnakeflaresits,cboar,cobra,cobra,anagram:ranked,0.840
+2026-04-04T15:57:45,2026-04-04T15:57:45,87606399917740785664,6,1,WHATISTHECAPITALOFSYRIA,whatisthecapitalofsyria,dsamsauc,damascus,damascus,anagram,0.910
+2026-04-04T16:00:31,2026-04-04T16:00:31,87606399917740785664,8,1,WHICHSHOWFEATURESADELIVERY,whichshowfeaturesadelivery,autrafum,futurama,futurama,anagram,0.910
+2026-04-04T16:21:03,2026-04-04T16:21:22,175212799835481571328,1,1,WHICHSERIESFOLLOWSACHEMISTRY TEACHERTURNEDDRUGKINGPIN,whichseriesfollowsachemistryteacherturneddrugkingpin,bdbienkraag,breakingbad,breakingbad,anagram,0.910
+2026-04-04T16:24:04,2026-04-04T16:24:11,175212799835481571328,3,1,WHICHGAMELETSPLAYERSBUILDWITH BLOCKSINA3DWORLD,whichgameletsplayersbuildwithblocksina3dworld,tancemirf,minecraft,minecraft,anagram,0.910
+2026-04-04T16:25:10,2026-04-04T16:25:10,87606399917740785664,4,1,WHATISTHECAPITALOFCHAD,whatisthecapitalofchad,danjamen,ndjamena,ndjamena,anagram,0.910
+2026-04-04T16:26:46,2026-04-04T16:26:54,175212799835481571328,5,1,"WHATISASYSTEMOFSTARS,GAS,AND DUSTINSPACECALLED",whatisasystemofstarsgasanddustinspacecalled,lyagxa,galaxy,galaxy,anagram,0.910
+2026-04-04T16:27:56,2026-04-04T16:27:56,87606399917740785664,6,1,WHICHMARVELANTIHEROISKNOWNFOR BREAKINGTHEFOURTHWALL,whichmarvelantiheroisknownforbreakingthefourthwall,eddplaoo,deadpool,deadpool,anagram,0.910
+2026-04-04T16:29:05,2026-04-04T16:51:32,175212799835481571328,7,1,WHICHGITREPOSITORYISSIMILARTO GITHUBANDOFFERSCI/CD,whichgitrepositoryissimilartogithubandofferscicd,gibat,gitlab,gitlab,anagram,0.910
+2026-04-04T12:23:06,2026-04-04T16:54:31,262819199753222356992,1,1,WHATISTHEMOSTPOPULOUSCITYIN,whatisthemostpopulouscityin,gasol,lagos,lagos,observed-guess,1.000
+2026-04-04T16:56:58,2026-04-04T16:56:58,87606399917740785664,3,1,WHICHBIRDISTHESYMBOLOFTHE,whichbirdisthesymbolofthe,gelae,eagle,eagle,anagram:ranked,0.840
+2026-04-04T16:58:03,2026-04-04T16:58:32,438031999588703928320,4,,WHOFOUNDEDBUDDHISM,whofoundedbuddhism,dabhdu,buddha,buddha,observed-guess,1.000
+2026-04-04T17:00:20,2026-04-04T17:01:15,613244799424185499648,6,1,WHATISTHECAPITALOFTOGO,whatisthecapitaloftogo,omel,lome,lome,observed-guess,1.000
+2026-04-04T14:58:27,2026-04-04T17:02:15,438031999588703928320,7,1,WHICHPROFESSORTEACHESPOTIONS ANDLOVESLILYPOTTER,whichprofessorteachespotionsandloveslilypotter,sanep,snape,snape,observed-guess,1.000
+2026-04-04T13:56:13,2026-04-04T17:03:20,700851199341926285312,8,1,WHICHCANADIANCITYSHARESITSNAME WITHAPROVINCE,whichcanadiancitysharesitsnamewithaprovince,eeuqcb,quebec,quebec,anagram:ranked,0.840
+2026-04-04T17:21:04,2026-04-04T17:21:04,87606399917740785664,1,1,WHICHINSECTGOESTHROUGH METAMORPHOSIS,whichinsectgoesthroughmetamorphosis,eutftlrby,butterfly,butterfly,anagram:ranked,0.840
+2026-04-04T17:22:43,2026-04-04T17:22:54,175212799835481571328,2,1,WHICHPLANETISTHELARGESTINOUR,whichplanetisthelargestinour,pijtrue,jupiter,jupiter,anagram,0.910
+2026-04-04T17:24:18,2026-04-04T17:24:18,87606399917740785664,3,1,WHATPOSITIVELYCHARGEDPARTICLEIS INANATOMSNUCLEUS,whatpositivelychargedparticleisinanatomsnucleus,npoort,proton,proton,openai:openrouter/free,1.000
+2026-04-04T16:22:21,2026-04-04T17:25:21,262819199753222356992,4,1,WHICHSPORTISPLAYEDONFLYING,whichsportisplayedonflying,duqiithcd,quidditch,quidditch,observed-guess,1.000
+2026-04-04T12:28:32,2026-04-04T17:26:23,525638399506444713984,5,1,WHICHMESSAGINGAPPISMOSTUSEDIN,whichmessagingappismostusedin,ahecwt,wechat,wechat,anagram:ranked,0.840
+2026-04-04T17:27:31,2026-04-04T17:27:31,87606399917740785664,6,1,WHICHGREEKGODISASSOCIATEDWITH,whichgreekgodisassociatedwith,apollo,apollo,apollo,anagram,0.910
+2026-04-04T17:29:52,2026-04-04T17:30:53,175212799835481571328,8,1,WHATTERMDESCRIBESSTORINGDATAON REMOTESERVERS,whattermdescribesstoringdataonremoteservers,ulcdo,cloud,cloud,openai:openrouter/free,1.000
+2026-04-04T17:51:05,2026-04-04T17:51:10,175212799835481571328,1,1,WHICHAPPBECAMEPOPULARFORVIDEO CALLSDURINGTHEPANDEMIC,whichappbecamepopularforvideocallsduringthepandemic,mzoo,zoom,zoom,anagram:ranked,0.840
+2026-04-04T17:52:07,2026-04-04T17:52:13,175212799835481571328,2,1,WHICHRIDE-SHARINGAPPCOMPETES WITHUBERINTHEUS,whichridesharingappcompeteswithuberintheus,lytf,lyft,lyft,anagram,0.910
+2026-04-04T17:53:14,2026-04-04T17:53:14,87606399917740785664,3,1,WHATISTHECAPITALOFWASHINGTON,whatisthecapitalofwashington,aympoil,olympia,olympia,anagram,0.910
+2026-04-04T12:23:41,2026-04-04T17:55:04,350425599670963142656,4,1,WHATSPACEROCKBURNSINEARTHS,whatspacerockburnsinearths,temero,meteor,meteor,observed-guess,1.000
+2026-04-04T17:56:01,2026-04-04T17:56:01,87606399917740785664,5,,WHICHPOKEMONISCONSIDEREDTHEGOD OFALLPOKEMON,whichpokemonisconsideredthegodofallpokemon,csearu,saucer,saucer,anagram:ranked,0.840
+2026-04-04T15:24:32,2026-04-04T18:05:21,262819199753222356992,7,1,WHOISCREDITEDWITHDISCOVERINGTHE,whoiscreditedwithdiscoveringthe,uucombls,columbus,columbus,anagram,0.910
+2026-04-04T11:52:27,2026-04-04T18:21:02,262819199753222356992,1,1,WHICHPLANETISKNOWNASTHERED,whichplanetisknownasthered,masr,mars,mars,anagram:seeded,0.820
+2026-04-04T17:28:32,2026-04-04T18:24:24,262819199753222356992,3,1,WHICHSERVICEDELIVERSFOODFROM,whichservicedeliversfoodfrom,odrhsaod,doordash,doordash,anagram,0.910
+2026-04-04T18:25:41,2026-04-04T18:25:41,87606399917740785664,4,1,WHATISTHECAPITALOFGHANA,whatisthecapitalofghana,racca,accra,accra,anagram,0.910
+2026-04-04T18:27:21,2026-04-04T18:27:21,87606399917740785664,5,1,WHICHMESSAGINGTOOLISPOPULARIN BUSINESSENVIRONMENTS,whichmessagingtoolispopularinbusinessenvironments,icksa,sakic,sakic,anagram,0.910
+2026-04-04T18:29:44,2026-04-04T18:29:44,87606399917740785664,6,1,WHATISTHECAPITALOFTHECENTRAL AFRICANREPUBLIC,whatisthecapitalofthecentralafricanrepublic,unagib,bangui,bangui,anagram:ranked,0.840
+2026-04-04T18:32:25,2026-04-04T18:32:25,87606399917740785664,8,1,WHATISTHECAPITALOFIRAN,whatisthecapitalofiran,hertna,tehran,tehran,anagram:ranked,0.840
+2026-04-04T15:29:25,2026-04-04T18:51:14,525638399506444713984,2,1,WHICHSERVER-SIDESCRIPTING LANGUAGEPOWERSMANYWEBSITES,whichserversidescriptinglanguagepowersmanywebsites,hpp,php,php,anagram:ranked,0.840
+2026-04-04T18:52:21,2026-04-04T18:52:21,87606399917740785664,2,,WHICHPLUMBERISNINTENDOSMOST FAMOUSCHARACTER,whichplumberisnintendosmostfamouscharacter,oiamr,mario,mario,openai:openrouter/free,1.000
+2026-04-04T18:54:59,2026-04-04T18:54:59,87606399917740785664,4,1,WHICHFILMISTHEFINALCHAPTEROF WOLVERINESSTORY,whichfilmisthefinalchapterofwolverinesstory,nogal,logan,logan,openai:openrouter/free,1.000
+2026-04-04T18:55:39,2026-04-04T18:59:44,175212799835481571328,5,,WHICHSHOPPINGSITEISCOMMONIN SOUTHEASTASIA,whichshoppingsiteiscommoninsoutheastasia,zladaa,lazada,lazada,anagram,0.910
+2026-04-04T19:00:43,2026-04-04T19:00:53,175212799835481571328,6,1,WHICHBROWSERISDEVELOPEDBY,whichbrowserisdevelopedby,ceomhr,chrome,chrome,anagram,0.910
+2026-04-04T19:01:53,2026-04-04T19:02:01,175212799835481571328,7,1,WHATISTHECAPITALOFHUNGARY,whatisthecapitalofhungary,uebdastp,budapest,budapest,anagram,0.910
+2026-04-04T19:03:03,2026-04-04T19:03:03,87606399917740785664,8,1,WHICHMYTHICALCREATUREHASTHE HEADOFABULLANDBODYOFAMAN,whichmythicalcreaturehastheheadofabullandbodyofaman,naroitmu,minotaur,minotaur,anagram,0.910
+2026-04-04T16:55:33,2026-04-04T19:22:43,262819199753222356992,2,,WHICHCANADIANCITYISTHEMOST,whichcanadiancityisthemost,onrotot,toronto,toronto,anagram,0.910
+2026-04-04T19:23:43,2026-04-04T19:24:33,175212799835481571328,3,1,WHICHGITPLATFORMISDEVELOPEDBY,whichgitplatformisdevelopedby,ktutibcbe,bitbucket,bitbucket,observed-guess,1.000
+2026-04-04T12:59:08,2026-04-04T19:25:38,350425599670963142656,4,1,WHATISTHECAPITALOFPORTUGAL,whatisthecapitalofportugal,sniobl,lisbon,lisbon,anagram:ranked,0.840
+2026-04-04T18:31:10,2026-04-04T19:26:38,262819199753222356992,5,1,WHATSPORTISPLAYEDONICEWITHA,whatsportisplayedonicewitha,ckyoeh,hockey,hockey,anagram:ranked,0.840
+2026-04-04T19:30:09,2026-04-04T19:30:13,175212799835481571328,8,1,WHICHINSECTMAKESHONEY,whichinsectmakeshoney,bee,bee,bee,anagram:ranked,0.840
+2026-04-04T13:52:29,2026-04-04T19:49:43,438031999588703928320,3,1,WHATISTHECAPITALOFWALES,whatisthecapitalofwales,dficfar,cardiff,cardiff,observed-guess,1.000
+2026-04-04T19:53:21,2026-04-04T19:53:21,87606399917740785664,2,1,WHATISTHECAPITALOFNEWYORK,whatisthecapitalofnewyork,yblnaa,albany,albany,observed-guess,1.000
+2026-04-04T19:55:26,2026-04-04T19:55:26,175212799835481571328,3,1,WHOIMPROVEDTHETELESCOPEAND SUPPORTEDHELIOCENTRISM,whoimprovedthetelescopeandsupportedheliocentrism,ogleila,galileo,galileo,observed-guess,1.000
+2026-04-04T19:57:14,2026-04-04T19:57:14,87606399917740785664,4,1,WHICHMARINECREATURESTICKSTO BOATSANDROCKS,whichmarinecreaturestickstoboatsandrocks,ranlecba,barnacle,barnacle,observed-guess,1.000
+2026-04-04T20:01:07,2026-04-04T20:01:15,262819199753222356992,7,1,WHOISTHEHEADMASTEROFHOGWARTS,whoistheheadmasterofhogwarts,drdbemeluo,dumbledore,dumbledore,observed-guess,1.000
+2026-04-04T20:02:12,2026-04-04T20:02:37,438031999588703928320,8,1,WHICHSHOOTERGAMEISPARTOFTHE COUNTER-STRIKESERIES,whichshootergameispartofthecounterstrikeseries,csgo,csgo,csgo,observed-guess,1.000
+2026-04-04T20:26:57,2026-04-04T20:27:05,262819199753222356992,5,,WHATISTHELONGESTMOUNTAINRANGE INSOUTHAMERICA,whatisthelongestmountainrangeinsouthamerica,eadns,andes,andes,observed-guess,1.000
+2026-04-04T20:29:23,2026-04-04T20:29:23,175212799835481571328,6,1,WHATISTHECAPITALOFRWANDA,whatisthecapitalofrwanda,ilagki,kigali,kigali,observed-guess,1.000
+2026-04-04T20:30:41,2026-04-04T20:30:59,350425599670963142656,7,1,WHATTYPEOFPRECIPITATIONFALLSAS,whattypeofprecipitationfallsas,ihla,hail,hail,observed-guess,1.000
+2026-04-04T20:31:06,2026-04-04T20:31:06,87606399917740785664,7,1,WHATTYPEOFPRECIPITATIONFALLSCS,whattypeofprecipitationfallscs,ihla,hail,hail,observed-guess,1.000
+2026-04-04T18:02:23,2026-04-04T20:32:04,525638399506444713984,8,1,WHATISTHECAPITALOFNIGER,whatisthecapitalofniger,anemyi,niamey,niamey,observed-guess,1.000
+2026-04-04T20:52:13,2026-04-04T20:52:13,87606399917740785664,1,1,WHATISTHECAPITALOFJORDAN,whatisthecapitalofjordan,namam,maman,maman,openai:qwen/qwen3.6-plus:free,0.800
+2026-04-04T20:56:50,2026-04-04T20:56:53,262819199753222356992,5,1,WHATMAKESHARRYINVISIBLE,whatmakesharryinvisible,laock,cloak,cloak,observed-guess,1.000
+2026-04-04T20:57:58,2026-04-04T20:58:02,262819199753222356992,6,1,WHOWASTHEFIRSTMANTOWALKON,whowasthefirstmantowalkon,ngorastmr,armstrong,armstrong,observed-guess,1.000
+2026-04-04T20:59:13,2026-04-04T20:59:19,262819199753222356992,7,1,"WHICHPRODUCTIVITYAPPCOMBINES DOCS,TASKS,ANDDATABASES",whichproductivityappcombinesdocstasksanddatabases,oontin,notion,notion,observed-guess,1.000
+2026-04-04T19:59:44,2026-04-04T21:07:45,963670399095148642304,6,1,WHICHFISHSWIMSUPSTREAMTOSPAWN,whichfishswimsupstreamtospawn,snmaol,salmon,salmon,observed-guess,1.000
+2026-04-04T21:22:53,2026-04-04T21:23:06,175212799835481571328,2,1,WHICHSMALLLIZARDISKNOWNFOR CLIMBINGWALLS,whichsmalllizardisknownforclimbingwalls,ekogc,gecko,gecko,observed-guess,1.000
+2026-04-04T21:24:16,2026-04-04T21:24:16,87606399917740785664,3,1,WHICHLANGUAGEISUSEDTOCREATE WEBPAGES,whichlanguageisusedtocreatewebpages,hlmt,html,html,observed-guess,1.000
+2026-04-04T21:25:27,2026-04-04T21:25:27,87606399917740785664,4,1,WHICHBROWSERISDEVELOPED,whichbrowserisdeveloped,firfxoe,firefox,firefox,observed-guess,1.000
+2026-04-04T16:59:17,2026-04-04T21:27:38,350425599670963142656,6,1,WHICHOPEN-SOURCEOPERATINGSYSTEM HASMANYDISTRIBUTIONS,whichopensourceoperatingsystemhasmanydistributions,inulx,linux,linux,observed-guess,1.000
+2026-04-04T21:28:59,2026-04-04T21:28:59,87606399917740785664,7,1,WHICHSUPERHEROWASBITTENBYA RADIOACTIVESPIDER,whichsuperherowasbittenbyaradioactivespider,dpeisnamr,spiderman,spiderman,observed-guess,1.000
+2026-04-04T21:30:17,2026-04-04T21:30:17,87606399917740785664,8,1,WHATISONEOFSOUTHAFRICAS,whatisoneofsouthafricas,triproae,pretoria,pretoria,observed-guess,1.000
+2026-04-04T21:51:10,2026-04-04T21:51:14,175212799835481571328,1,1,WHATFORCEPULLSOBJECTSTOWARD,whatforcepullsobjectstoward,rgaivyt,gravity,gravity,openai:qwen/qwen3.6-plus:free,1.000
+2026-04-04T20:52:40,2026-04-04T21:52:14,438031999588703928320,2,1,WHICHSPORTUSESAHOOPANDBALL,whichsportusesahoopandball,laastekblb,basketball,basketball,observed-guess,1.000
+2026-04-04T19:21:03,2026-04-05T05:21:11,525638399506444713984,1,1,WHICHWEBSITEISMOSTPOPULARFOR VIDEOCONTENT,whichwebsiteismostpopularforvideocontent,bueouyt,youtube,youtube,observed-guess,1.000
+2026-04-05T05:22:29,2026-04-05T05:22:29,87606399917740785664,2,1,WHATISTHEMOSTICONICPOKEMON CHARACTER,whatisthemosticonicpokemoncharacter,ukaciph,pikachu,pikachu,observed-guess,1.000
+2026-04-05T05:23:38,2026-04-05T05:23:38,87606399917740785664,3,1,WHICHMARINEANIMALISKNOWNASTHE KILLERWHALE,whichmarineanimalisknownasthekillerwhale,aroc,orca,orca,observed-guess,1.000
+2026-04-04T18:53:31,2026-04-05T05:26:04,350425599670963142656,5,1,WHICHPLATFORMFEATURESSHORT FORMVIDEOSANDVIRALDANCES,whichplatformfeaturesshortformvideosandviraldances,ikttko,tiktok,tiktok,observed-guess,1.000
+2026-04-05T05:27:32,2026-04-05T05:27:32,87606399917740785664,6,1,WHATISTHECAPITALOFPAKISTAN,whatisthecapitalofpakistan,dsaaabilm,islamabad,islamabad,observed-guess,1.000
+2026-04-05T05:29:10,2026-04-05T05:29:10,87606399917740785664,7,1,WHATISTHECAPITALOFICELAND,whatisthecapitaloficeland,rikayevkj,reykjavik,reykjavik,observed-guess,1.000
+2026-04-05T05:58:55,2026-04-05T05:59:01,65704799938305589248,5,1,WHICHCITYISKNOWNASTHEETERNAL,whichcityisknownastheeternal,meor,rome,rome,observed-guess,1.000
+2026-04-05T06:00:11,2026-04-05T06:00:34,16426199984576397312,6,1,WHICHDARKWiZARDFEAREDBYALLWAS ONCETOMRIDDLE,whichdarkwizardfearedbyallwasoncetomriddle,mteodlvor,voldemort,voldemort,observed-guess,1.000
+2026-04-05T05:30:21,2026-04-05T06:01:15,93081799912599584768,8,1,WHATMOUNTAINERUPTSWITHLAVAAND,whatmountaineruptswithlavaand,olcnvao,volcano,volcano,observed-guess,1.000
+2026-04-05T06:02:30,2026-04-05T06:02:43,2053274998072049664,8,1,WHICHANIMALCARRIESITSYOUNGINA,whichanimalcarriesitsyoungina,gnaakoor,kangaroo,kangaroo,observed-guess,1.000
+2026-04-05T06:21:19,2026-04-05T06:21:27,513318749518012416,1,1,WHICHLARGEANIMALSPENDSMUCHOF ITSTIMEINWATER,whichlargeanimalspendsmuchofitstimeinwater,ppohi,hippo,hippo,observed-guess,1.000
+2026-04-05T06:22:31,2026-04-05T06:22:31,85553124919668736,2,1,WHICHPLATFORMALLOWSUSERSTO RENTHOMESFROMOTHERS,whichplatformallowsuserstorenthomesfromothers,arnibb,airbnb,airbnb,observed-guess,1.000
+2026-04-05T06:23:44,2026-04-05T06:23:44,42776562459834368,3,1,WHATFAMOUSSTATUEWASAGIFTFROM FRANCETOTHEUSA,whatfamousstatuewasagiftfromfrancetotheusa,byeilrt,liberty,liberty,observed-guess,1.000
+2026-04-04T21:21:30,2026-04-05T06:24:53,175255576397941405696,1,1,WHICHSCI-FIMOVIEEXPLORESTIME DILATIONANDBLACKHOLES,whichscifimovieexplorestimedilationandblackholes,stleilrrtaen,interstellar,interstellar,observed-guess,1.000
+2026-04-05T06:28:34,2026-04-05T06:28:34,10694140614958592,5,1,WHICHVILLAINSEEKSTHETRIFORCEIN ZELDAGAMES,whichvillainseeksthetriforceinzeldagames,nfnodrago,ganondorf,ganondorf,observed-guess,1.000
+2026-04-05T06:29:58,2026-04-05T06:29:58,5347070307479296,6,1,WHATDEVICEHELPSSEETINY ORGANISMS,whatdevicehelpsseetinyorganisms,csrociopme,microscope,microscope,observed-guess,1.000
+2026-04-05T06:31:04,2026-04-05T06:31:10,4010302730609472,7,,WHICHSUPERHEROTURNSGREENWHEN,whichsuperheroturnsgreenwhen,khul,hulk,hulk,observed-guess,1.000
+2026-04-05T06:32:25,2026-04-05T06:32:30,1670959471087280,8,1,WHATISTHECAPITALOFNEWJERSEY? 3minute(s)lefttoenterBloodCastle,whatisthecapitalofnewjersey3minuteslefttoenterbloodcastle,onntrte,trenton,trenton,observed-guess,1.000
+2026-04-05T06:51:43,2026-04-05T06:51:43,41462322304000,1,1,WHICHHOUSEVALUESLOYALTYAND HARDWORK,whichhousevaluesloyaltyandhardwork,fheufuplff,hufflepuff,hufflepuff,observed-guess,1.000
+2026-04-04T14:25:00,2026-04-05T06:52:52,262819241215544660992,5,1,WHICHGAMEFEATURESBATTLEROYALE GAMEPLAYANDDANCES,whichgamefeaturesbattleroyalegameplayanddances,tironeft,fortnite,fortnite,observed-guess,1.000
+2026-04-05T06:54:12,2026-04-05T06:54:12,10365580576000,3,1,WHATISTHECAPITALOFMALI,whatisthecapitalofmali,mkabao,bamako,bamako,observed-guess,1.000
+2026-04-05T06:55:49,2026-04-05T06:55:54,7774185432000,4,1,WHICHSPACEOBJECTHASATAILOFGAS,whichspaceobjecthasatailofgas,ometc,comet,comet,observed-guess,1.000
+2026-04-05T06:57:15,2026-04-05T06:57:15,1295697572000,5,1,WHICHSEARCHENGINEEMPHASIZES,whichsearchengineemphasizes,dukcdoukgc,duckduckgo,duckduckgo,observed-guess,1.000
+2026-04-05T06:58:27,2026-04-05T06:58:27,647848786000,6,1,WHATISTHECAPITALOFGUINEA-BISSAU,whatisthecapitalofguineabissau,bsaius,bissau,bissau,observed-guess,1.000
+2026-04-05T06:59:39,2026-04-05T06:59:39,323924393000,7,1,WHICHANIMALEATSEUCALYPTUSLEAVES INAUSTRALIA,whichanimaleatseucalyptusleavesinaustralia,lkaao,koala,koala,observed-guess,1.000
+2026-04-05T07:00:49,2026-04-05T07:00:49,161962196500,8,1,WHATARACHNIDSPINSWEBS,whatarachnidspinswebs,edspri,spider,spider,observed-guess,1.000
+2026-04-04T14:52:31,2026-04-05T07:57:22,175212799869678091916,2,1,WHATISTHECAPITALOFEQUATORIAL,whatisthecapitalofequatorial,maalbo,malabo,malabo,observed-guess,1.000
+2026-04-04T11:54:54,2026-04-05T07:57:41,262819199838713658462,7,1,WHICHFEMALEARCHAEOLOGISTSTARSIN TOMBRAIDER,whichfemalearchaeologiststarsintombraider,alar,lara,lara,observed-guess,1.000
+2026-04-04T21:53:23,2026-04-05T07:58:27,87606399919625890836,3,1,WHICHCHINESEE-COMMERCESITESHIPS WORLDWIDE,whichchineseecommercesiteshipsworldwide,isrpsexeal,aliexpress,aliexpress,observed-guess,1.000
+2026-04-05T08:21:26,2026-04-05T08:21:40,44365872,1,1,WHICHMESSAGINGAPPISOWNEDBY,whichmessagingappisownedby,tapwsaph,whatsapp,whatsapp,observed-guess,1.000
+2026-04-05T05:24:59,2026-04-05T08:22:28,87606399917744482820,4,1,WHATRIVERFLOWSTHROUGHLONDON,whatriverflowsthroughlondon,hemast,thames,thames,observed-guess,1.000
+2026-04-05T07:59:36,2026-04-05T08:22:48,203092064,8,1,WHICHWARRIORISTHEGODOFWAR,whichwarrioristhegodofwar,ktoasr,kratos,kratos,observed-guess,1.000
+2026-04-05T08:23:46,2026-04-05T08:24:31,199063,3,1,WHICHPLANETISKNOWNFORITSDEEP BLUE.COLOR,whichplanetisknownforitsdeepbluecolor,eupnten,neptune,neptune,observed-guess,1.000
+2026-04-05T08:25:41,2026-04-05T08:25:49,7824,4,1,WHICHMETALISCOMMONLYUSEDIN JEWELRY?S,whichmetaliscommonlyusedinjewelrys,eivsrl,silver,silver,observed-guess,1.000
+2026-04-05T08:26:53,2026-04-05T08:28:03,432,5,1,WHICH GREENLIZARD IS OFTEN SEEN IN TROPICALAREAS,whichgreenlizardisoftenseenintropicalareas,nugaai,iguana,iguana,observed-guess,1.000
+2026-04-05T08:28:53,2026-04-05T08:29:03,5,6,1,WHOINVENTEDDYNAMITEANDLATER FUNDEDAFAMOUSPRIZE,whoinventeddynamiteandlaterfundedafamousprize,onebl,nobel,nobel,observed-guess,1.000
