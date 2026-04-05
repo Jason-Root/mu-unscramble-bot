@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mu-unscramble-bot"
+version = "0.2.0"
+description = "Screen-reading MU Online helper that watches the center yellow text, solves the puzzle, and can auto-submit the answer."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "geonamescache>=3.0,<4",
+  "mss>=10,<11",
+  "numpy>=2.4,<3",
+  "opencv-python>=4.13,<5",
+  "openai>=2.30,<3",
+  "pillow>=12.2,<13",
+  "pydirectinput>=1.0,<2",
+  "pyautogui>=0.9,<1",
+  "pygetwindow>=0.0.9,<1",
+  "packaging>=24,<26",
+  "python-dotenv>=1.2,<2",
+  "rapidocr_onnxruntime>=1.4,<2",
+  "wordfreq>=3.1,<4",
+]
+
+[project.scripts]
+mu-unscramble-bot = "mu_unscramble_bot.gui:main"
+mu-unscramble-bot-cli = "mu_unscramble_bot.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["mu_unscramble_bot*"]

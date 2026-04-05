@@ -1,0 +1,4 @@
+# Add one likely answer per line.
+# Keep entries lowercase and remove spaces if the scramble also removes them.
+
+apollo11
