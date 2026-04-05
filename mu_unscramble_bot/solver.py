@@ -158,7 +158,14 @@ class LocalAnagramSolver:
         self.extra_word_set = set()
 
         if top_n_list is not None and self.max_words > 0:
-            for index, raw_word in enumerate(top_n_list("en", self.max_words)):
+            try:
+                builtin_words = top_n_list("en", self.max_words)
+            except LookupError:
+                builtin_words = ()
+            except Exception:
+                builtin_words = ()
+
+            for index, raw_word in enumerate(builtin_words):
                 self._register_word(
                     by_signature,
                     raw_word,
