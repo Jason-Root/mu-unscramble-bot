@@ -1118,16 +1118,29 @@ class DesktopApp:
 
     def _open_duplicates_window(self) -> None:
         config = load_config()
-        from mu_unscramble_bot.memory_store import QuestionMemory
+        from mu_unscramble_bot.github_answer_sheet import GitHubAnswerSheetConfig
+        from mu_unscramble_bot.memory_store import DuplicateGroup, QuestionMemory
 
-        memory = QuestionMemory(path=config.question_memory_path, github_sync=None)
+        github_sync = None
+        if config.github_answer_sheet_enabled:
+            github_sync = GitHubAnswerSheetConfig(
+                repository=config.github_answer_sheet_repository,
+                branch=config.github_answer_sheet_branch,
+                path=config.github_answer_sheet_path,
+                token=config.github_answer_sheet_token,
+                sync_interval_seconds=config.github_answer_sheet_sync_interval_seconds,
+                commit_message=config.github_answer_sheet_commit_message,
+            )
+
+        memory = QuestionMemory(path=config.question_memory_path, github_sync=github_sync)
         window = tk.Toplevel(self.root)
         window.title(f"{APP_NAME} Duplicates")
         window.configure(bg=WINDOW_BG)
-        window.geometry("760x520")
+        window.geometry("900x560")
 
         search_var = tk.StringVar()
-        text_var = tk.StringVar()
+        status_var = tk.StringVar(value="Choose a duplicate group to review.")
+        group_items: list[DuplicateGroup] = []
 
         container = tk.Frame(window, bg=WINDOW_BG, padx=16, pady=16)
         container.pack(fill="both", expand=True)
@@ -1148,6 +1161,22 @@ class DesktopApp:
             justify="left",
         ).pack(anchor="w", pady=(4, 0))
 
+        if config.github_answer_sheet_enabled:
+            sync_note = (
+                "Changes will sync back to GitHub."
+                if (config.github_answer_sheet_token or "").strip()
+                else "This PC is read-only for GitHub sync. Local removals may come back from the community sheet."
+            )
+            tk.Label(
+                container,
+                text=sync_note,
+                bg=WINDOW_BG,
+                fg="#79c0ff",
+                font=("Segoe UI", 9),
+                wraplength=840,
+                justify="left",
+            ).pack(anchor="w", pady=(6, 0))
+
         search_row = tk.Frame(container, bg=WINDOW_BG)
         search_row.pack(fill="x", pady=(14, 0))
         tk.Entry(
@@ -1160,28 +1189,10 @@ class DesktopApp:
             font=("Segoe UI", 10),
         ).pack(side="left", fill="x", expand=True)
 
-        output = tk.Text(
-            container,
-            bg=CARD_BG,
-            fg=TEXT_MAIN,
-            insertbackground=TEXT_MAIN,
-            relief="flat",
-            font=("Consolas", 9),
-            wrap="word",
-        )
-        output.pack(fill="both", expand=True, pady=(12, 0))
-
-        def refresh_results() -> None:
-            lines = memory.find_duplicates(search_var.get().strip())
-            output.configure(state="normal")
-            output.delete("1.0", "end")
-            output.insert("1.0", "\n".join(lines) if lines else "No duplicates found.")
-            output.configure(state="disabled")
-
         tk.Button(
             search_row,
             text="Search",
-            command=refresh_results,
+            command=lambda: refresh_groups(),
             bg=BLUE,
             fg=TEXT_MAIN,
             relief="flat",
@@ -1190,7 +1201,179 @@ class DesktopApp:
             font=("Segoe UI Semibold", 9),
         ).pack(side="left", padx=(8, 0))
 
-        refresh_results()
+        body = tk.Frame(container, bg=WINDOW_BG)
+        body.pack(fill="both", expand=True, pady=(12, 0))
+
+        groups_card = self._card(body)
+        groups_card.pack(side="left", fill="both", expand=False)
+        tk.Label(
+            groups_card,
+            text="Duplicate Groups",
+            bg=CARD_BG,
+            fg=TEXT_SOFT,
+            font=("Segoe UI", 10, "bold"),
+        ).pack(anchor="w")
+
+        group_list_frame = tk.Frame(groups_card, bg=CARD_BG)
+        group_list_frame.pack(fill="both", expand=True, pady=(8, 0))
+        group_listbox = tk.Listbox(
+            group_list_frame,
+            bg=CARD_BG,
+            fg=TEXT_MAIN,
+            insertbackground=TEXT_MAIN,
+            relief="flat",
+            font=("Segoe UI", 10),
+            activestyle="none",
+            exportselection=False,
+        )
+        group_scrollbar = ttk.Scrollbar(group_list_frame, orient="vertical", command=group_listbox.yview)
+        group_listbox.configure(yscrollcommand=group_scrollbar.set, width=38, height=18)
+        group_listbox.pack(side="left", fill="both", expand=True)
+        group_scrollbar.pack(side="right", fill="y")
+
+        detail_card = self._card(body)
+        detail_card.pack(side="left", fill="both", expand=True, padx=(12, 0))
+        tk.Label(
+            detail_card,
+            textvariable=status_var,
+            bg=CARD_BG,
+            fg=TEXT_SOFT,
+            font=("Segoe UI", 10, "bold"),
+            wraplength=500,
+            justify="left",
+        ).pack(anchor="w")
+
+        tree = ttk.Treeview(
+            detail_card,
+            columns=("scramble", "answer", "frequency"),
+            show="headings",
+            selectmode="extended",
+            height=14,
+        )
+        tree.heading("scramble", text="Scramble")
+        tree.heading("answer", text="Answer")
+        tree.heading("frequency", text="Freq")
+        tree.column("scramble", width=180, anchor="w")
+        tree.column("answer", width=180, anchor="w")
+        tree.column("frequency", width=80, anchor="center")
+        tree_scrollbar = ttk.Scrollbar(detail_card, orient="vertical", command=tree.yview)
+        tree.configure(yscrollcommand=tree_scrollbar.set)
+        tree.pack(side="left", fill="both", expand=True, pady=(10, 0))
+        tree_scrollbar.pack(side="right", fill="y", pady=(10, 0))
+
+        action_row = tk.Frame(container, bg=WINDOW_BG)
+        action_row.pack(fill="x", pady=(12, 0))
+
+        def selected_group() -> DuplicateGroup | None:
+            selection = group_listbox.curselection()
+            if not selection:
+                return None
+            index = int(selection[0])
+            if index < 0 or index >= len(group_items):
+                return None
+            return group_items[index]
+
+        def selected_rows() -> list[tuple[str, str]]:
+            rows: list[tuple[str, str]] = []
+            for item_id in tree.selection():
+                values = tree.item(item_id, "values")
+                if len(values) < 2:
+                    continue
+                rows.append((str(values[0]), str(values[1])))
+            return rows
+
+        def refresh_group_rows() -> None:
+            for item_id in tree.get_children():
+                tree.delete(item_id)
+
+            group = selected_group()
+            if group is None:
+                status_var.set("Choose a duplicate group to review.")
+                return
+
+            if group.kind == "scramble":
+                status_var.set(f"Scramble {group.key} has multiple answers. Keep one or remove bad OCR rows.")
+            else:
+                status_var.set(f"Answer {group.key} appears under multiple scrambles. Keep one or remove bad OCR rows.")
+
+            for record in group.records:
+                tree.insert(
+                    "",
+                    "end",
+                    iid=f"{record.scrambled_letters}|{record.answer}",
+                    values=(record.scrambled_letters, record.answer, record.frequency),
+                )
+
+        def refresh_groups() -> None:
+            nonlocal group_items
+            previous_group = selected_group()
+            previous_key = (previous_group.kind, previous_group.key) if previous_group is not None else None
+            group_items = memory.duplicate_groups(search_var.get().strip())
+
+            group_listbox.delete(0, "end")
+            for group in group_items:
+                group_listbox.insert("end", group.label)
+
+            if not group_items:
+                status_var.set("No duplicates found.")
+                refresh_group_rows()
+                return
+
+            select_index = 0
+            if previous_key is not None:
+                for index, group in enumerate(group_items):
+                    if (group.kind, group.key) == previous_key:
+                        select_index = index
+                        break
+
+            group_listbox.selection_clear(0, "end")
+            group_listbox.selection_set(select_index)
+            group_listbox.activate(select_index)
+            refresh_group_rows()
+
+        def keep_selected() -> None:
+            group = selected_group()
+            rows = selected_rows()
+            if group is None:
+                messagebox.showwarning(APP_NAME, "Choose a duplicate group first.")
+                return
+            if len(rows) != 1:
+                messagebox.showwarning(APP_NAME, "Select exactly one row to keep.")
+                return
+
+            removed = memory.keep_record_for_group(group.kind, group.key, rows[0])
+            if removed <= 0:
+                messagebox.showinfo(APP_NAME, "Nothing changed.")
+                return
+
+            self.append_log(f"Removed {removed} duplicate row(s) while keeping {rows[0][1]} for {group.key}.")
+            refresh_groups()
+
+        def remove_selected() -> None:
+            rows = selected_rows()
+            if not rows:
+                messagebox.showwarning(APP_NAME, "Select one or more rows to remove.")
+                return
+            if not messagebox.askyesno(APP_NAME, f"Remove {len(rows)} selected row(s) from the answer sheet?"):
+                return
+
+            removed = memory.delete_records(rows)
+            if removed <= 0:
+                messagebox.showinfo(APP_NAME, "Nothing changed.")
+                return
+
+            self.append_log(f"Removed {removed} duplicate row(s) from the answer sheet.")
+            refresh_groups()
+
+        self._make_button(action_row, "Keep Selected", keep_selected, accent=GREEN).pack(side="left")
+        self._make_button(action_row, "Remove Selected", remove_selected, accent=RED).pack(side="left", padx=(8, 0))
+        self._make_button(action_row, "Refresh", refresh_groups, accent="#345369").pack(side="left", padx=(8, 0))
+
+        group_listbox.bind("<<ListboxSelect>>", lambda _event: refresh_group_rows())
+        tree.bind("<Double-1>", lambda _event: keep_selected())
+        window.bind("<Return>", lambda _event: keep_selected())
+
+        refresh_groups()
 
     def _open_data_folder(self) -> None:
         path = user_data_dir()

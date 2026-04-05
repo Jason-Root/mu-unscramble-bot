@@ -7,6 +7,7 @@ import math
 import os
 from pathlib import Path
 import time
+from typing import Callable
 
 from mu_unscramble_bot.github_answer_sheet import GitHubAnswerSheetClient, GitHubAnswerSheetConfig
 from mu_unscramble_bot.models import Puzzle, SolverResult, normalize_letters
@@ -75,6 +76,19 @@ class MemoryRecord:
             "answer": self.answer,
             "frequency": str(self.frequency),
         }
+
+
+@dataclass(frozen=True, slots=True)
+class DuplicateGroup:
+    kind: str
+    key: str
+    records: tuple[MemoryRecord, ...]
+
+    @property
+    def label(self) -> str:
+        if self.kind == "scramble":
+            return f"Scramble conflict: {self.key} ({len(self.records)} answers)"
+        return f"Answer conflict: {self.key} ({len(self.records)} scrambles)"
 
 
 class QuestionMemory:
@@ -179,6 +193,86 @@ class QuestionMemory:
 
         return lines
 
+    def duplicate_groups(self, query: str = "") -> list[DuplicateGroup]:
+        self._reload_if_changed()
+        needle = normalize_letters(query)
+
+        groups: list[DuplicateGroup] = []
+        by_scramble: dict[str, list[MemoryRecord]] = {}
+        by_answer: dict[str, list[MemoryRecord]] = {}
+        for record in self.records:
+            by_scramble.setdefault(record.scrambled_letters, []).append(record)
+            by_answer.setdefault(record.answer, []).append(record)
+
+        for scramble, records in sorted(by_scramble.items()):
+            unique_answers = {record.answer for record in records}
+            if len(unique_answers) <= 1:
+                continue
+            if needle and needle not in scramble and not any(needle in record.answer for record in records):
+                continue
+            groups.append(
+                DuplicateGroup(
+                    kind="scramble",
+                    key=scramble,
+                    records=tuple(sorted(records, key=lambda item: (-item.frequency, item.answer))),
+                )
+            )
+
+        for answer, records in sorted(by_answer.items()):
+            unique_scrambles = {record.scrambled_letters for record in records}
+            if len(unique_scrambles) <= 1:
+                continue
+            if needle and needle not in answer and not any(needle in record.scrambled_letters for record in records):
+                continue
+            groups.append(
+                DuplicateGroup(
+                    kind="answer",
+                    key=answer,
+                    records=tuple(sorted(records, key=lambda item: (-item.frequency, item.scrambled_letters))),
+                )
+            )
+
+        groups.sort(key=lambda group: (group.kind, group.key))
+        return groups
+
+    def delete_records(self, rows: list[tuple[str, str]]) -> int:
+        keys = {
+            (normalize_letters(scramble), normalize_letters(answer))
+            for scramble, answer in rows
+            if normalize_letters(scramble) and normalize_letters(answer)
+        }
+        if not keys:
+            return 0
+
+        return self._apply_mutation(
+            lambda records: [
+                record
+                for record in records
+                if (record.scrambled_letters, record.answer) not in keys
+            ]
+        )
+
+    def keep_record_for_group(self, group_kind: str, group_key: str, keep_row: tuple[str, str]) -> int:
+        normalized_group_key = normalize_letters(group_key)
+        keep_scramble = normalize_letters(keep_row[0])
+        keep_answer = normalize_letters(keep_row[1])
+        if not normalized_group_key or not keep_scramble or not keep_answer:
+            return 0
+
+        def mutate(records: list[MemoryRecord]) -> list[MemoryRecord]:
+            kept: list[MemoryRecord] = []
+            for record in records:
+                if group_kind == "scramble" and record.scrambled_letters == normalized_group_key:
+                    if record.answer != keep_answer:
+                        continue
+                elif group_kind == "answer" and record.answer == normalized_group_key:
+                    if record.scrambled_letters != keep_scramble:
+                        continue
+                kept.append(record)
+            return kept
+
+        return self._apply_mutation(mutate)
+
     def _load(self, *, force: bool = False) -> None:
         stamp = self._file_stamp()
         if not force and stamp == self._last_file_stamp:
@@ -216,6 +310,44 @@ class QuestionMemory:
         if self._github_client is not None:
             self._push_to_github()
             self._last_github_sync_at = time.monotonic()
+
+    def _apply_mutation(self, mutator: Callable[[list[MemoryRecord]], list[MemoryRecord]]) -> int:
+        for _ in range(3):
+            snapshot_sha: str | None = None
+            with self._acquire_lock():
+                disk_records, _ = self._read_records_from_disk()
+                base_records = self._canonicalize_records(disk_records)
+
+                if self._github_client is not None:
+                    try:
+                        snapshot = self._github_client.fetch()
+                    except Exception:
+                        snapshot = None
+                    if snapshot is not None:
+                        snapshot_sha = snapshot.sha
+                        remote_records = self._parse_csv_text(snapshot.text)
+                        if remote_records:
+                            base_records = self._canonicalize_records(base_records + remote_records)
+
+                updated_records = self._canonicalize_records(mutator(list(base_records)))
+                removed_count = max(0, len(base_records) - len(updated_records))
+                if removed_count == 0:
+                    self.records = updated_records
+                    self._last_file_stamp = self._file_stamp()
+                    return 0
+
+                self.records = updated_records
+                self._write_records_exact(updated_records)
+
+            if self._github_client is not None and (self._github_client.config.token or "").strip():
+                try:
+                    self._github_client.push(self._serialize_csv_text(), sha=snapshot_sha)
+                except Exception:
+                    continue
+
+            self._last_github_sync_at = time.monotonic()
+            return removed_count
+        return 0
 
     def _fetch_github_records(self) -> list[MemoryRecord]:
         if self._github_client is None:
@@ -339,11 +471,15 @@ class QuestionMemory:
     def _save_local_only(self) -> None:
         self.records = self._canonicalize_records(self.records)
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._write_records_exact(self.records)
+
+    def _write_records_exact(self, records: list[MemoryRecord]) -> None:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
         temp_path = self.path.with_suffix(self.path.suffix + f".{os.getpid()}.tmp")
         with temp_path.open("w", encoding="utf-8", newline="") as handle:
             writer = csv.DictWriter(handle, fieldnames=CSV_FIELDS)
             writer.writeheader()
-            for record in self.records:
+            for record in records:
                 writer.writerow(record.to_row())
         temp_path.replace(self.path)
         self._last_file_stamp = self._file_stamp()
