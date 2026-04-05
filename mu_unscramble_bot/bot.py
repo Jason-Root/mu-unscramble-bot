@@ -54,6 +54,7 @@ class MuUnscrambleBot:
         self._last_observed_answer = ""
         self._recent_ocr_lines: deque[list[str]] = deque(maxlen=max(1, config.ocr_history_frames))
         self._completed_rounds: dict[str, float] = {}
+        self._submitted_answers_by_round: dict[str, dict[str, float]] = {}
         self._online_executor: ThreadPoolExecutor | None = None
         if self.solver.has_online_solver():
             self._online_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="mu-online-solver")
@@ -134,6 +135,7 @@ class MuUnscrambleBot:
             return None, None
 
         self._prune_completed_rounds(now=time.monotonic())
+        self._prune_submitted_answers(now=time.monotonic())
         if self._is_round_completed(puzzle):
             self._cancel_pending_online_if_matches(puzzle.round_key)
             self._update_overlay_from_puzzle(
@@ -293,6 +295,19 @@ class MuUnscrambleBot:
             )
             return puzzle, solution
 
+        if self._has_submitted_answer(puzzle, solution.normalized_answer):
+            self._update_overlay_from_puzzle(
+                puzzle,
+                status="This answer was already submitted for the current round.",
+                answer_text=solution.normalized_answer,
+                method_text="already submitted",
+                ocr_text=live_ocr_text,
+            )
+            self._log(
+                f"Skipped duplicate submit for round {puzzle.round_number}: {solution.normalized_answer}"
+            )
+            return puzzle, solution
+
         self._update_overlay_from_puzzle(
             puzzle,
             status="Submitting answer...",
@@ -301,6 +316,7 @@ class MuUnscrambleBot:
             ocr_text=live_ocr_text,
         )
         if self.submitter.submit(solution.normalized_answer):
+            self._mark_answer_submitted(puzzle, solution.normalized_answer)
             self._mark_round_completed(puzzle)
             self._update_overlay_from_puzzle(
                 puzzle,
@@ -594,6 +610,32 @@ class MuUnscrambleBot:
         stale_keys = [key for key, completed_at in self._completed_rounds.items() if (now - completed_at) >= cutoff]
         for key in stale_keys:
             self._completed_rounds.pop(key, None)
+
+    def _mark_answer_submitted(self, puzzle: Puzzle, answer: str) -> None:
+        answer_key = answer.strip().lower()
+        if not answer_key:
+            return
+        submitted = self._submitted_answers_by_round.setdefault(puzzle.round_key, {})
+        submitted[answer_key] = time.monotonic()
+
+    def _has_submitted_answer(self, puzzle: Puzzle, answer: str) -> bool:
+        answer_key = answer.strip().lower()
+        if not answer_key:
+            return False
+        submitted = self._submitted_answers_by_round.get(puzzle.round_key, {})
+        return answer_key in submitted
+
+    def _prune_submitted_answers(self, *, now: float) -> None:
+        cutoff = max(45.0, self.config.submission_cooldown_seconds * 4)
+        stale_rounds: list[str] = []
+        for round_key, answers in self._submitted_answers_by_round.items():
+            stale_answers = [answer for answer, submitted_at in answers.items() if (now - submitted_at) >= cutoff]
+            for answer in stale_answers:
+                answers.pop(answer, None)
+            if not answers:
+                stale_rounds.append(round_key)
+        for round_key in stale_rounds:
+            self._submitted_answers_by_round.pop(round_key, None)
 
     def _should_start_online_solve(self) -> bool:
         return (
