@@ -23,8 +23,13 @@ class BotConfig:
     center_offset_x: int = 0
     center_offset_y: int = 275
     capture_interval_seconds: float = 0.08
+    active_capture_interval_seconds: float = 0.08
+    idle_capture_interval_seconds: float = 0.35
+    active_round_count: int = 8
+    active_round_linger_seconds: float = 20.0
     submission_cooldown_seconds: float = 8.0
     unsolved_retry_seconds: float = 0.25
+    pending_api_submit_grace_seconds: float = 12.0
     yellow_hsv_lower: tuple[int, int, int] = (12, 90, 90)
     yellow_hsv_upper: tuple[int, int, int] = (45, 255, 255)
     mask_dilate_iterations: int = 1
@@ -40,6 +45,7 @@ class BotConfig:
     auto_submit: bool = True
     open_chat_before_submit: bool = True
     open_chat_key: str = "enter"
+    submit_command_word: str = "scramble"
     submit_text_template: str = "/scramble {answer}"
     submit_key: str = "enter"
     key_hold_seconds: float = 0.05
@@ -66,6 +72,7 @@ class BotConfig:
     question_memory_fuzzy_cutoff: float = 0.96
     memory_only_mode: bool = False
     local_dictionary_enabled: bool = True
+    local_dictionary_unique_only: bool = True
     local_dictionary_max_words: int = 250000
     local_dictionary_path: str = "data/local_dictionary.txt"
     openai_model: str = "qwen/qwen3.6-plus:free"
@@ -104,6 +111,17 @@ def load_config(path: str | Path | None = None) -> BotConfig:
         data["yellow_hsv_upper"] = tuple(data["yellow_hsv_upper"])
 
     config = BotConfig(**data)
+    if "active_capture_interval_seconds" not in data:
+        config.active_capture_interval_seconds = config.capture_interval_seconds
+    if "idle_capture_interval_seconds" not in data:
+        config.idle_capture_interval_seconds = max(0.25, config.capture_interval_seconds * 4)
+    if "submit_command_word" not in data:
+        command_word = (config.submit_text_template or "").strip()
+        if command_word.startswith("/"):
+            command_word = command_word[1:]
+        command_word = command_word.replace("{answer}", "").strip()
+        if command_word:
+            config.submit_command_word = command_word
     if config.memory_only_mode:
         config.test_api_on_startup = False
         config.openai_api_key = None
@@ -139,8 +157,13 @@ def save_config(config: BotConfig, path: str | Path | None = None) -> Path:
         "center_offset_x": config.center_offset_x,
         "center_offset_y": config.center_offset_y,
         "capture_interval_seconds": config.capture_interval_seconds,
+        "active_capture_interval_seconds": config.active_capture_interval_seconds,
+        "idle_capture_interval_seconds": config.idle_capture_interval_seconds,
+        "active_round_count": config.active_round_count,
+        "active_round_linger_seconds": config.active_round_linger_seconds,
         "submission_cooldown_seconds": config.submission_cooldown_seconds,
         "unsolved_retry_seconds": config.unsolved_retry_seconds,
+        "pending_api_submit_grace_seconds": config.pending_api_submit_grace_seconds,
         "yellow_hsv_lower": list(config.yellow_hsv_lower),
         "yellow_hsv_upper": list(config.yellow_hsv_upper),
         "mask_dilate_iterations": config.mask_dilate_iterations,
@@ -156,6 +179,7 @@ def save_config(config: BotConfig, path: str | Path | None = None) -> Path:
         "auto_submit": config.auto_submit,
         "open_chat_before_submit": config.open_chat_before_submit,
         "open_chat_key": config.open_chat_key,
+        "submit_command_word": config.submit_command_word,
         "submit_text_template": config.submit_text_template,
         "submit_key": config.submit_key,
         "key_hold_seconds": config.key_hold_seconds,
@@ -182,6 +206,7 @@ def save_config(config: BotConfig, path: str | Path | None = None) -> Path:
         "question_memory_fuzzy_cutoff": config.question_memory_fuzzy_cutoff,
         "memory_only_mode": config.memory_only_mode,
         "local_dictionary_enabled": config.local_dictionary_enabled,
+        "local_dictionary_unique_only": config.local_dictionary_unique_only,
         "local_dictionary_max_words": config.local_dictionary_max_words,
         "local_dictionary_path": config.local_dictionary_path,
         "openai_model": config.openai_model,

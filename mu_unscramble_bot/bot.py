@@ -49,6 +49,8 @@ class MuUnscrambleBot:
         self._last_window_error_at = 0.0
         self._last_detected_puzzle: Puzzle | None = None
         self._last_detected_puzzle_at = 0.0
+        self._last_round_activity_at = 0.0
+        self._last_active_round_number: int | None = None
         self._last_observed_answer = ""
         self._recent_ocr_lines: deque[list[str]] = deque(maxlen=max(1, config.ocr_history_frames))
         self._completed_rounds: dict[str, float] = {}
@@ -91,7 +93,7 @@ class MuUnscrambleBot:
         try:
             while not self._stop_requested.is_set():
                 self.run_once()
-                time.sleep(self.config.capture_interval_seconds)
+                time.sleep(self._current_capture_interval_seconds())
         finally:
             self.close()
 
@@ -114,12 +116,20 @@ class MuUnscrambleBot:
         if puzzle:
             self._last_detected_puzzle = puzzle
             self._last_detected_puzzle_at = time.monotonic()
+            self._last_round_activity_at = self._last_detected_puzzle_at
+            self._last_active_round_number = puzzle.round_number
 
         if observed_answer:
             self._learn_from_observed_answer(observed_answer)
             self._mark_last_detected_round_completed()
 
         if not puzzle:
+            pending_result = self._consume_pending_online_result_without_visible_puzzle(
+                live_ocr_text=live_ocr_text,
+                cycle_started_at=cycle_started_at,
+            )
+            if pending_result is not None:
+                return pending_result
             self._update_idle_overlay(live_ocr_text, api_status=self._api_status_text())
             return None, None
 
@@ -557,6 +567,8 @@ class MuUnscrambleBot:
             f"Learned answer from guessed-word line for round {self._last_detected_puzzle.round_number}: "
             f"{observed_answer}"
         )
+        self._last_round_activity_at = time.monotonic()
+        self._last_active_round_number = self._last_detected_puzzle.round_number
 
     def _mark_last_detected_round_completed(self) -> None:
         if self._last_detected_puzzle is None:
@@ -567,6 +579,8 @@ class MuUnscrambleBot:
 
     def _mark_round_completed(self, puzzle: Puzzle) -> None:
         self._completed_rounds[puzzle.round_key] = time.monotonic()
+        self._last_round_activity_at = time.monotonic()
+        self._last_active_round_number = puzzle.round_number
         self._cancel_pending_online_if_matches(puzzle.round_key)
 
     def _is_round_completed(self, puzzle: Puzzle) -> bool:
@@ -591,6 +605,8 @@ class MuUnscrambleBot:
     def _start_online_solve(self, puzzle: Puzzle) -> None:
         if self._online_executor is None:
             return
+        self._last_round_activity_at = time.monotonic()
+        self._last_active_round_number = puzzle.round_number
         future = self._online_executor.submit(self.solver.solve_online, puzzle)
         self._pending_online_solve = PendingOnlineSolve(
             puzzle=puzzle,
@@ -651,3 +667,51 @@ class MuUnscrambleBot:
                 text = text[:87] + "..."
             cleaned.append(text)
         return "\n".join(cleaned) if cleaned else "-"
+
+    def _consume_pending_online_result_without_visible_puzzle(
+        self,
+        *,
+        live_ocr_text: str,
+        cycle_started_at: float,
+    ) -> tuple[Puzzle, SolverResult] | None:
+        pending = self._pending_online_solve
+        if pending is None or not pending.future.done():
+            return None
+
+        if self._is_round_completed(pending.puzzle):
+            self._pending_online_solve = None
+            return None
+
+        elapsed = time.monotonic() - pending.started_at
+        if elapsed > self.config.pending_api_submit_grace_seconds:
+            self._cancel_pending_online("Discarded late API result after the submit grace window expired.")
+            return None
+
+        solution = self._consume_pending_online_result(pending.puzzle)
+        if solution is None:
+            self._last_failed_at[pending.puzzle.signature] = time.monotonic()
+            return None
+
+        self._log("API result arrived after OCR lost the puzzle text. Submitting from the pending solve.")
+        return self._finalize_solution(
+            pending.puzzle,
+            solution,
+            live_ocr_text=live_ocr_text,
+            cycle_started_at=cycle_started_at,
+        )
+
+    def _current_capture_interval_seconds(self) -> float:
+        if self._is_active_round_window():
+            return max(0.01, self.config.active_capture_interval_seconds)
+        return max(0.01, self.config.idle_capture_interval_seconds)
+
+    def _is_active_round_window(self) -> bool:
+        if self._pending_online_solve is not None:
+            return True
+
+        round_number = self._last_active_round_number
+        if round_number is None:
+            return False
+        if round_number < 1 or round_number > max(1, self.config.active_round_count):
+            return False
+        return (time.monotonic() - self._last_round_activity_at) <= max(1.0, self.config.active_round_linger_seconds)

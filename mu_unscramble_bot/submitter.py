@@ -71,6 +71,10 @@ class AnswerSubmitter:
         return not self.config.require_window_match
 
     def _build_submit_text(self, answer: str) -> str:
+        command_word = (self.config.submit_command_word or "").strip().lstrip("/")
+        if command_word:
+            return f"/{command_word} {answer}".strip()
+
         template = self.config.submit_text_template.strip()
         if not template:
             return answer

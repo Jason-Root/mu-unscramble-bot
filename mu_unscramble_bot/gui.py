@@ -7,7 +7,7 @@ import queue
 import threading
 import traceback
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import filedialog, messagebox, ttk
 
 from mu_unscramble_bot.bot import MuUnscrambleBot
 from mu_unscramble_bot.config import BotConfig, load_config, load_env_settings, save_config, save_env_settings
@@ -73,6 +73,18 @@ def _values_to_speed(typing_interval_seconds: float) -> int:
     return max(1, min(10, int(round(1 + ratio * 9))))
 
 
+def _seconds_to_ms_text(value: float) -> str:
+    return str(int(round(max(0.0, value) * 1000)))
+
+
+def _ms_text_to_seconds(value: str, *, fallback: float) -> float:
+    try:
+        milliseconds = float(value.strip())
+    except Exception:
+        return fallback
+    return max(0.01, milliseconds / 1000.0)
+
+
 def _detect_provider(config: BotConfig) -> str:
     base_url = (config.openai_base_url or "").strip().lower()
     api_key = (config.openai_api_key or "").strip()
@@ -107,6 +119,14 @@ class SettingsDialog:
         self.community_sync_var = tk.BooleanVar(value=self.config.github_answer_sheet_enabled)
         self.github_token_var = tk.StringVar(value=self.env_settings.get("GITHUB_TOKEN", ""))
         self.speed_var = tk.IntVar(value=_values_to_speed(self.config.typing_interval_seconds))
+        self.command_word_var = tk.StringVar(value=self.config.submit_command_word)
+        self.active_capture_ms_var = tk.StringVar(value=_seconds_to_ms_text(self.config.active_capture_interval_seconds))
+        self.idle_capture_ms_var = tk.StringVar(value=_seconds_to_ms_text(self.config.idle_capture_interval_seconds))
+        self.active_round_count_var = tk.StringVar(value=str(self.config.active_round_count))
+        self.active_round_linger_var = tk.StringVar(value=str(self.config.active_round_linger_seconds))
+        self.dictionary_enabled_var = tk.BooleanVar(value=self.config.local_dictionary_enabled)
+        self.dictionary_unique_only_var = tk.BooleanVar(value=self.config.local_dictionary_unique_only)
+        self.dictionary_path_var = tk.StringVar(value=self.config.local_dictionary_path)
         self.speed_text_var = tk.StringVar()
 
         container = tk.Frame(self.window, bg=WINDOW_BG, padx=18, pady=18)
@@ -208,6 +228,139 @@ class SettingsDialog:
             fg="#7ee787",
             font=("Segoe UI", 10, "bold"),
         ).pack(anchor="w", pady=(6, 0))
+
+        submit_card = self._card(container)
+        submit_card.pack(fill="x", pady=(16, 0))
+        self._row_label(submit_card, "Submission Command").pack(anchor="w")
+        tk.Label(
+            submit_card,
+            text="Default is scramble. The app sends /<word> <answer>.",
+            bg=CARD_BG,
+            fg=TEXT_SOFT,
+            font=("Segoe UI", 9),
+        ).pack(anchor="w", pady=(4, 0))
+        tk.Entry(
+            submit_card,
+            textvariable=self.command_word_var,
+            bg="#0b1620",
+            fg=TEXT_MAIN,
+            insertbackground=TEXT_MAIN,
+            relief="flat",
+            font=("Segoe UI", 10),
+        ).pack(fill="x", pady=(8, 0))
+
+        ocr_card = self._card(container)
+        ocr_card.pack(fill="x", pady=(16, 0))
+        self._row_label(ocr_card, "OCR Pace").pack(anchor="w")
+        tk.Label(
+            ocr_card,
+            text="Fast scan runs during round chains. Idle scan runs between games.",
+            bg=CARD_BG,
+            fg=TEXT_SOFT,
+            font=("Segoe UI", 9),
+        ).pack(anchor="w", pady=(4, 0))
+
+        ocr_grid = tk.Frame(ocr_card, bg=CARD_BG)
+        ocr_grid.pack(fill="x", pady=(10, 0))
+        self._row_label(ocr_grid, "Round OCR (ms)").grid(row=0, column=0, sticky="w")
+        tk.Entry(
+            ocr_grid,
+            textvariable=self.active_capture_ms_var,
+            bg="#0b1620",
+            fg=TEXT_MAIN,
+            insertbackground=TEXT_MAIN,
+            relief="flat",
+            font=("Consolas", 10),
+            width=10,
+        ).grid(row=1, column=0, sticky="we", padx=(0, 10), pady=(6, 0))
+        self._row_label(ocr_grid, "Idle OCR (ms)").grid(row=0, column=1, sticky="w")
+        tk.Entry(
+            ocr_grid,
+            textvariable=self.idle_capture_ms_var,
+            bg="#0b1620",
+            fg=TEXT_MAIN,
+            insertbackground=TEXT_MAIN,
+            relief="flat",
+            font=("Consolas", 10),
+            width=10,
+        ).grid(row=1, column=1, sticky="we", padx=(0, 10), pady=(6, 0))
+        self._row_label(ocr_grid, "Rounds Per Event").grid(row=0, column=2, sticky="w")
+        tk.Entry(
+            ocr_grid,
+            textvariable=self.active_round_count_var,
+            bg="#0b1620",
+            fg=TEXT_MAIN,
+            insertbackground=TEXT_MAIN,
+            relief="flat",
+            font=("Consolas", 10),
+            width=10,
+        ).grid(row=1, column=2, sticky="we", padx=(0, 10), pady=(6, 0))
+        self._row_label(ocr_grid, "Fast Mode Hold (s)").grid(row=0, column=3, sticky="w")
+        tk.Entry(
+            ocr_grid,
+            textvariable=self.active_round_linger_var,
+            bg="#0b1620",
+            fg=TEXT_MAIN,
+            insertbackground=TEXT_MAIN,
+            relief="flat",
+            font=("Consolas", 10),
+            width=10,
+        ).grid(row=1, column=3, sticky="we", pady=(6, 0))
+
+        dictionary_card = self._card(container)
+        dictionary_card.pack(fill="x", pady=(16, 0))
+        self._row_label(dictionary_card, "Dictionary Attack").pack(anchor="w")
+        tk.Checkbutton(
+            dictionary_card,
+            text="Enable dictionary anagram solver",
+            variable=self.dictionary_enabled_var,
+            bg=CARD_BG,
+            fg=TEXT_MAIN,
+            activebackground=CARD_BG,
+            activeforeground=TEXT_MAIN,
+            selectcolor="#0b1620",
+            font=("Segoe UI", 10),
+        ).pack(anchor="w", pady=(8, 0))
+        tk.Checkbutton(
+            dictionary_card,
+            text="Only submit if there is exactly one possible word",
+            variable=self.dictionary_unique_only_var,
+            bg=CARD_BG,
+            fg=TEXT_MAIN,
+            activebackground=CARD_BG,
+            activeforeground=TEXT_MAIN,
+            selectcolor="#0b1620",
+            font=("Segoe UI", 10),
+        ).pack(anchor="w", pady=(6, 0))
+        tk.Label(
+            dictionary_card,
+            text="Custom dictionary path. Supports .txt and .json files.",
+            bg=CARD_BG,
+            fg=TEXT_SOFT,
+            font=("Segoe UI", 9),
+        ).pack(anchor="w", pady=(10, 0))
+        dictionary_row = tk.Frame(dictionary_card, bg=CARD_BG)
+        dictionary_row.pack(fill="x", pady=(8, 0))
+        tk.Entry(
+            dictionary_row,
+            textvariable=self.dictionary_path_var,
+            bg="#0b1620",
+            fg=TEXT_MAIN,
+            insertbackground=TEXT_MAIN,
+            relief="flat",
+            font=("Segoe UI", 10),
+        ).pack(side="left", fill="x", expand=True)
+        tk.Button(
+            dictionary_row,
+            text="Browse",
+            command=self._browse_dictionary,
+            bg="#2d5f41",
+            fg=TEXT_MAIN,
+            relief="flat",
+            padx=12,
+            pady=6,
+            font=("Segoe UI Semibold", 9),
+        ).pack(side="left", padx=(8, 0))
 
         github_card = self._card(container)
         github_card.pack(fill="x", pady=(16, 0))
@@ -324,11 +477,26 @@ class SettingsDialog:
             f"{int(round(key_hold * 1000))} ms key hold"
         )
 
+    def _browse_dictionary(self) -> None:
+        path = filedialog.askopenfilename(
+            parent=self.window,
+            title="Choose dictionary file",
+            filetypes=[
+                ("Dictionary files", "*.txt *.json"),
+                ("Text files", "*.txt"),
+                ("JSON files", "*.json"),
+                ("All files", "*.*"),
+            ],
+        )
+        if path:
+            self.dictionary_path_var.set(path)
+
     def _save(self) -> None:
         provider = self.provider_var.get()
         model = self.model_var.get().strip()
         base_url = self.base_url_var.get().strip()
         api_key = self.api_key_var.get().strip()
+        command_word = self.command_word_var.get().strip().lstrip("/")
 
         if provider != PROVIDER_DISABLED and not model:
             messagebox.showwarning(APP_NAME, "Enter a model name before saving.")
@@ -336,12 +504,37 @@ class SettingsDialog:
         if provider in {PROVIDER_LOCAL, PROVIDER_CUSTOM, PROVIDER_OPENROUTER} and not base_url and provider != PROVIDER_DISABLED:
             messagebox.showwarning(APP_NAME, "Enter a base URL before saving.")
             return
+        if not command_word:
+            messagebox.showwarning(APP_NAME, "Enter the trigger command word, like scramble or answer.")
+            return
 
         config = load_config()
         config.show_overlay = False
         config.test_api_on_startup = False
         config.typing_interval_seconds, config.key_hold_seconds = _speed_to_values(self.speed_var.get())
+        config.active_capture_interval_seconds = _ms_text_to_seconds(
+            self.active_capture_ms_var.get(),
+            fallback=config.active_capture_interval_seconds,
+        )
+        config.idle_capture_interval_seconds = _ms_text_to_seconds(
+            self.idle_capture_ms_var.get(),
+            fallback=config.idle_capture_interval_seconds,
+        )
+        config.capture_interval_seconds = config.active_capture_interval_seconds
+        try:
+            config.active_round_count = max(1, int(float(self.active_round_count_var.get().strip())))
+        except Exception:
+            config.active_round_count = max(1, config.active_round_count)
+        try:
+            config.active_round_linger_seconds = max(1.0, float(self.active_round_linger_var.get().strip()))
+        except Exception:
+            config.active_round_linger_seconds = max(1.0, config.active_round_linger_seconds)
         config.github_answer_sheet_enabled = self.community_sync_var.get()
+        config.submit_command_word = command_word
+        config.submit_text_template = f"/{command_word} {{answer}}"
+        config.local_dictionary_enabled = self.dictionary_enabled_var.get()
+        config.local_dictionary_unique_only = self.dictionary_unique_only_var.get()
+        config.local_dictionary_path = self.dictionary_path_var.get().strip() or config.local_dictionary_path
         save_config(config)
 
         if provider == PROVIDER_DISABLED:
@@ -389,8 +582,8 @@ class DesktopApp:
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
         self.root.title(APP_NAME)
-        self.root.geometry("760x470")
-        self.root.minsize(680, 430)
+        self.root.geometry("760x320")
+        self.root.minsize(680, 300)
         self.root.configure(bg=WINDOW_BG)
 
         self._message_queue: queue.SimpleQueue[tuple[str, object]] = queue.SimpleQueue()
@@ -516,46 +709,12 @@ class DesktopApp:
             pady=(6, 0),
         )
 
-        answer_row = tk.Frame(body, bg=WINDOW_BG)
-        answer_row.pack(fill="x", pady=(14, 0))
-
-        answer_card = self._card(answer_row)
-        answer_card.pack(side="left", fill="both", expand=True)
-        tk.Label(answer_card, text="Answer", bg=CARD_BG, fg=TEXT_SOFT, font=("Segoe UI", 10, "bold")).pack(anchor="w")
-        tk.Label(
-            answer_card,
-            textvariable=self.answer_var,
-            bg=CARD_BG,
-            fg="#7ee787",
-            font=("Consolas", 22, "bold"),
-            wraplength=300,
-            justify="left",
-        ).pack(anchor="w", pady=(10, 0))
-        tk.Label(answer_card, textvariable=self.round_var, bg=CARD_BG, fg="#f2cc60", font=("Segoe UI", 10)).pack(
-            anchor="w",
-            pady=(8, 0),
-        )
-
-        hint_card = self._card(answer_row)
-        hint_card.pack(side="left", fill="both", expand=True, padx=(14, 0))
-        tk.Label(hint_card, text="Hint", bg=CARD_BG, fg=TEXT_SOFT, font=("Segoe UI", 10, "bold")).pack(anchor="w")
-        tk.Label(
-            hint_card,
-            textvariable=self.hint_var,
-            bg=CARD_BG,
-            fg=TEXT_MAIN,
-            font=("Segoe UI", 11),
-            justify="left",
-            anchor="nw",
-            wraplength=320,
-            height=6,
-        ).pack(fill="both", expand=True, pady=(10, 0))
-
         actions = tk.Frame(body, bg=WINDOW_BG)
-        actions.pack(fill="x", pady=(12, 0))
+        actions.pack(fill="x", pady=(14, 0))
         self._make_button(actions, self.details_button_var.get(), self._toggle_details, accent="#38566b").pack(side="left")
         self.details_button = actions.winfo_children()[-1]
         self._make_button(actions, "Data Folder", self._open_data_folder, accent="#2d5f41").pack(side="left", padx=(8, 0))
+        self._make_button(actions, "Duplicates", self._open_duplicates_window, accent="#5f4b2d").pack(side="left", padx=(8, 0))
 
         self.details_frame = self._card(body)
         tk.Label(self.details_frame, text="Recent Activity", bg=CARD_BG, fg=TEXT_SOFT, font=("Segoe UI", 10, "bold")).pack(
@@ -750,7 +909,10 @@ class DesktopApp:
 
     def _run_update_install(self, result: UpdateCheckResult) -> None:
         try:
+            self._message_queue.put(("log", f"Downloading {result.asset_name or result.latest_version}..."))
             archive_path = download_release_asset(result)
+            self._message_queue.put(("log", f"Download complete: {archive_path.name}"))
+            self._message_queue.put(("log", "Staging update and preparing restart..."))
             stage_windows_update(archive_path)
         except Exception as exc:
             self._message_queue.put(("update-install-error", f"Update install failed: {type(exc).__name__}: {exc}"))
@@ -808,7 +970,7 @@ class DesktopApp:
                 )
                 if self._bot is not None:
                     self._bot.request_stop()
-                self.root.after(120, self.root.destroy)
+                self.root.after(120, self._exit_for_update)
 
         self.root.after(120, self._pump_messages)
 
@@ -845,12 +1007,88 @@ class DesktopApp:
             self.details_frame.pack(fill="x", pady=(12, 0))
             self.details_button_var.set("Hide Details")
             self.details_button.config(text=self.details_button_var.get())
-            self.root.geometry("760x690")
+            self.root.geometry("760x560")
         else:
             self.details_frame.pack_forget()
             self.details_button_var.set("Show Details")
             self.details_button.config(text=self.details_button_var.get())
-            self.root.geometry("760x470")
+            self.root.geometry("760x320")
+
+    def _open_duplicates_window(self) -> None:
+        config = load_config()
+        from mu_unscramble_bot.memory_store import QuestionMemory
+
+        memory = QuestionMemory(path=config.question_memory_path, github_sync=None)
+        window = tk.Toplevel(self.root)
+        window.title(f"{APP_NAME} Duplicates")
+        window.configure(bg=WINDOW_BG)
+        window.geometry("760x520")
+
+        search_var = tk.StringVar()
+        text_var = tk.StringVar()
+
+        container = tk.Frame(window, bg=WINDOW_BG, padx=16, pady=16)
+        container.pack(fill="both", expand=True)
+        tk.Label(
+            container,
+            text="Duplicate Review",
+            bg=WINDOW_BG,
+            fg=TEXT_MAIN,
+            font=("Segoe UI Semibold", 16),
+        ).pack(anchor="w")
+        tk.Label(
+            container,
+            text="Find OCR mismatches where the same scramble maps to multiple answers or the same answer appears under multiple scrambles.",
+            bg=WINDOW_BG,
+            fg=TEXT_SOFT,
+            font=("Segoe UI", 9),
+            wraplength=700,
+            justify="left",
+        ).pack(anchor="w", pady=(4, 0))
+
+        search_row = tk.Frame(container, bg=WINDOW_BG)
+        search_row.pack(fill="x", pady=(14, 0))
+        tk.Entry(
+            search_row,
+            textvariable=search_var,
+            bg="#0b1620",
+            fg=TEXT_MAIN,
+            insertbackground=TEXT_MAIN,
+            relief="flat",
+            font=("Segoe UI", 10),
+        ).pack(side="left", fill="x", expand=True)
+
+        output = tk.Text(
+            container,
+            bg=CARD_BG,
+            fg=TEXT_MAIN,
+            insertbackground=TEXT_MAIN,
+            relief="flat",
+            font=("Consolas", 9),
+            wrap="word",
+        )
+        output.pack(fill="both", expand=True, pady=(12, 0))
+
+        def refresh_results() -> None:
+            lines = memory.find_duplicates(search_var.get().strip())
+            output.configure(state="normal")
+            output.delete("1.0", "end")
+            output.insert("1.0", "\n".join(lines) if lines else "No duplicates found.")
+            output.configure(state="disabled")
+
+        tk.Button(
+            search_row,
+            text="Search",
+            command=refresh_results,
+            bg=BLUE,
+            fg=TEXT_MAIN,
+            relief="flat",
+            padx=12,
+            pady=6,
+            font=("Segoe UI Semibold", 9),
+        ).pack(side="left", padx=(8, 0))
+
+        refresh_results()
 
     def _open_data_folder(self) -> None:
         path = user_data_dir()
@@ -861,6 +1099,12 @@ class DesktopApp:
         existing = self.log_var.get().splitlines()
         existing.append(text.rstrip())
         self.log_var.set("\n".join(existing[-12:]))
+
+    def _exit_for_update(self) -> None:
+        try:
+            self.root.destroy()
+        finally:
+            os._exit(0)
 
     def _reset_running_state(self) -> None:
         self.start_button.config(state="normal")

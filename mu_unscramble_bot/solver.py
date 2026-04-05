@@ -140,6 +140,7 @@ class CapitalCitySolver:
 class LocalAnagramSolver:
     max_words: int = 250000
     custom_dictionary_path: Path | None = None
+    unique_only: bool = True
     seed_answers: tuple[str, ...] = ()
     extra_words: tuple[str, ...] = ()
     name: str = "anagram"
@@ -188,6 +189,11 @@ class LocalAnagramSolver:
         candidates = self.candidates_by_signature.get(make_signature(puzzle.normalized_scramble))
         if not candidates:
             return None
+
+        if self.unique_only:
+            if len(candidates) != 1:
+                return None
+            return SolverResult(answer=candidates[0], method=f"{self.name}:unique", confidence=0.96)
 
         scored = sorted(
             ((self._score_candidate(candidate, puzzle), candidate) for candidate in candidates),
@@ -246,6 +252,17 @@ class LocalAnagramSolver:
 
     def _load_custom_words(self) -> list[str]:
         if self.custom_dictionary_path is None or not self.custom_dictionary_path.exists():
+            return []
+
+        if self.custom_dictionary_path.suffix.lower() == ".json":
+            try:
+                payload = json.loads(self.custom_dictionary_path.read_text(encoding="utf-8"))
+            except Exception:
+                return []
+            if isinstance(payload, list):
+                return [str(item).strip() for item in payload if str(item).strip()]
+            if isinstance(payload, dict):
+                return [str(key).strip() for key in payload.keys() if str(key).strip()]
             return []
 
         words: list[str] = []
@@ -558,6 +575,7 @@ def build_solver_chain(config: BotConfig) -> SolverChain:
             LocalAnagramSolver(
                 max_words=config.local_dictionary_max_words,
                 custom_dictionary_path=Path(config.local_dictionary_path),
+                unique_only=config.local_dictionary_unique_only,
                 seed_answers=tuple(question_memory.known_answers()) if question_memory is not None else (),
                 extra_words=tuple(sorted(set(capital_solver.capitals_by_country.values()))),
             )
