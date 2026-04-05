@@ -129,8 +129,31 @@ class SettingsDialog:
         self.dictionary_path_var = tk.StringVar(value=self.config.local_dictionary_path)
         self.speed_text_var = tk.StringVar()
 
-        container = tk.Frame(self.window, bg=WINDOW_BG, padx=18, pady=18)
-        container.pack(fill="both", expand=True)
+        outer = tk.Frame(self.window, bg=WINDOW_BG, padx=18, pady=18)
+        outer.pack(fill="both", expand=True)
+
+        scroll_shell = tk.Frame(outer, bg=WINDOW_BG)
+        scroll_shell.pack(fill="both", expand=True)
+        self.settings_canvas = tk.Canvas(
+            scroll_shell,
+            bg=WINDOW_BG,
+            highlightthickness=0,
+            bd=0,
+        )
+        settings_scrollbar = ttk.Scrollbar(
+            scroll_shell,
+            orient="vertical",
+            command=self.settings_canvas.yview,
+        )
+        self.settings_canvas.configure(yscrollcommand=settings_scrollbar.set)
+        self.settings_canvas.pack(side="left", fill="both", expand=True)
+        settings_scrollbar.pack(side="right", fill="y")
+
+        container = tk.Frame(self.settings_canvas, bg=WINDOW_BG)
+        self._settings_canvas_window = self.settings_canvas.create_window((0, 0), window=container, anchor="nw")
+        container.bind("<Configure>", self._sync_settings_scrollregion)
+        self.settings_canvas.bind("<Configure>", self._sync_settings_canvas_width)
+        self.window.bind("<MouseWheel>", self._on_settings_mousewheel)
 
         tk.Label(
             container,
@@ -409,7 +432,7 @@ class SettingsDialog:
             font=("Segoe UI", 9),
         ).pack(anchor="w", pady=(6, 0))
 
-        actions = tk.Frame(container, bg=WINDOW_BG)
+        actions = tk.Frame(outer, bg=WINDOW_BG)
         actions.pack(fill="x", pady=(18, 0))
         tk.Button(
             actions,
@@ -437,17 +460,30 @@ class SettingsDialog:
         self._apply_provider_preset(initial=True)
         self._update_speed_text()
         self.window.update_idletasks()
-        width = 520
-        height = self.window.winfo_height()
+        width = max(760, self.parent.root.winfo_width())
+        height = min(640, max(520, self.window.winfo_height()))
         x = parent.root.winfo_rootx() + max(30, (parent.root.winfo_width() - width) // 2)
         y = parent.root.winfo_rooty() + 40
         self.window.geometry(f"{width}x{height}+{x}+{y}")
+        self.settings_canvas.yview_moveto(0.0)
 
     def _card(self, parent: tk.Misc) -> tk.Frame:
         return tk.Frame(parent, bg=CARD_BG, highlightbackground=CARD_BORDER, highlightthickness=1, padx=14, pady=14)
 
     def _row_label(self, parent: tk.Misc, text: str) -> tk.Label:
         return tk.Label(parent, text=text, bg=CARD_BG, fg=TEXT_SOFT, font=("Segoe UI", 10, "bold"))
+
+    def _sync_settings_scrollregion(self, _event: tk.Event | None = None) -> None:
+        self.settings_canvas.configure(scrollregion=self.settings_canvas.bbox("all"))
+
+    def _sync_settings_canvas_width(self, event: tk.Event) -> None:
+        self.settings_canvas.itemconfigure(self._settings_canvas_window, width=event.width)
+
+    def _on_settings_mousewheel(self, event: tk.Event) -> str | None:
+        if event.delta == 0:
+            return None
+        self.settings_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        return "break"
 
     def _apply_provider_preset(self, initial: bool = False) -> None:
         provider = self.provider_var.get()
