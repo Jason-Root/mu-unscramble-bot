@@ -520,6 +520,7 @@ class SolverChain:
         self._cache: dict[str, SolverResult] = {}
         self._offline_solvers = [solver for solver in solvers if not isinstance(solver, OpenAIHintSolver)]
         self._online_solvers = [solver for solver in solvers if isinstance(solver, OpenAIHintSolver)]
+        self._prefer_early_online = self._compute_prefer_early_online(solvers)
 
     def solve(self, puzzle: Puzzle) -> SolverResult | None:
         result = self.solve_fast(puzzle)
@@ -573,6 +574,9 @@ class SolverChain:
     def has_online_solver(self) -> bool:
         return bool(self._online_solvers)
 
+    def prefers_early_online(self) -> bool:
+        return self._prefer_early_online and bool(self._online_solvers)
+
     def memory_size(self) -> int:
         if self.question_memory is None:
             return 0
@@ -585,6 +589,23 @@ class SolverChain:
             self.question_memory.remember(puzzle, result)
         self._cache[puzzle.signature] = result
         return True
+
+    @staticmethod
+    def _compute_prefer_early_online(solvers: list[Solver]) -> bool:
+        first_online_index: int | None = None
+        first_offline_index: int | None = None
+        for index, solver in enumerate(solvers):
+            if isinstance(solver, OpenAIHintSolver):
+                if first_online_index is None:
+                    first_online_index = index
+                continue
+            if first_offline_index is None:
+                first_offline_index = index
+        return (
+            first_online_index is not None
+            and first_offline_index is not None
+            and first_online_index < first_offline_index
+        )
 
 
 def build_solver_chain(config: BotConfig) -> SolverChain:

@@ -178,6 +178,20 @@ class MuUnscrambleBot:
             ocr_text=live_ocr_text,
         )
 
+        if (
+            self._pending_online_solve is None
+            and self._should_start_online_solve()
+            and self.solver.prefers_early_online()
+        ):
+            self._start_online_solve(puzzle)
+            self._update_overlay_from_puzzle(
+                puzzle,
+                status="AI started in background while fast solvers keep checking...",
+                answer_text="-",
+                method_text="api early",
+                ocr_text=live_ocr_text,
+            )
+
         if observed_answer and self.solver.remember(
             puzzle,
             SolverResult(answer=observed_answer, method="observed-guess", confidence=1.0),
@@ -271,6 +285,7 @@ class MuUnscrambleBot:
         live_ocr_text: str,
         cycle_started_at: float,
     ) -> tuple[Puzzle, SolverResult]:
+        self._cancel_pending_online_if_matches(puzzle.round_key)
         self._last_failed_at.pop(puzzle.signature, None)
         self._last_solved_at[puzzle.signature] = time.monotonic()
         self._update_overlay_from_puzzle(

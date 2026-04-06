@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import ctypes
+import json
 import os
 import queue
 import threading
@@ -10,6 +11,8 @@ import tkinter as tk
 from tkinter import font as tkfont
 from tkinter import filedialog, messagebox, ttk
 from urllib.parse import urlparse
+import urllib.error
+import urllib.request
 
 from mu_unscramble_bot.bot import MuUnscrambleBot
 from mu_unscramble_bot.config import (
@@ -158,6 +161,70 @@ def _normalize_provider_base_url(provider: str, base_url: str) -> str:
     return f"{cleaned}/v1"
 
 
+def _fetch_model_candidates(base_url: str, *, api_key: str = "") -> list[str]:
+    normalized = base_url.strip().rstrip("/")
+    if not normalized:
+        raise ValueError("Base URL is empty.")
+
+    parsed = urlparse(normalized)
+    path = (parsed.path or "").rstrip("/")
+    base_root = normalized[:-3] if path.endswith("/v1") else normalized
+    base_root = base_root.rstrip("/")
+
+    candidate_urls: list[str] = []
+    if path.endswith("/v1"):
+        candidate_urls.append(f"{normalized}/models")
+    else:
+        candidate_urls.append(f"{normalized}/v1/models")
+    candidate_urls.append(f"{base_root}/api/tags")
+
+    headers = {"User-Agent": "mu-unscramble-bot"}
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+
+    errors: list[str] = []
+    seen_models: dict[str, None] = {}
+    for url in dict.fromkeys(candidate_urls):
+        try:
+            request = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(request, timeout=8.0) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            errors.append(f"{url} -> HTTP {exc.code}")
+            continue
+        except Exception as exc:
+            errors.append(f"{url} -> {type(exc).__name__}: {exc}")
+            continue
+
+        for model in _extract_model_ids(payload):
+            seen_models[str(model)] = None
+        if seen_models:
+            return sorted(seen_models.keys())
+
+    error_text = errors[0] if errors else "No model endpoints returned data."
+    raise RuntimeError(error_text)
+
+
+def _extract_model_ids(payload: object) -> list[str]:
+    models: list[str] = []
+    if isinstance(payload, dict):
+        if isinstance(payload.get("data"), list):
+            for item in payload["data"]:
+                if not isinstance(item, dict):
+                    continue
+                model_id = str(item.get("id") or item.get("model") or item.get("name") or "").strip()
+                if model_id:
+                    models.append(model_id)
+        if isinstance(payload.get("models"), list):
+            for item in payload["models"]:
+                if not isinstance(item, dict):
+                    continue
+                model_id = str(item.get("name") or item.get("model") or item.get("id") or "").strip()
+                if model_id:
+                    models.append(model_id)
+    return models
+
+
 class SettingsDialog:
     def __init__(self, parent: "DesktopApp") -> None:
         self.parent = parent
@@ -188,6 +255,7 @@ class SettingsDialog:
         self.dictionary_path_var = tk.StringVar(value=self.config.local_dictionary_path)
         self.send_hint_var = tk.BooleanVar(value=self.config.openai_send_hint)
         self.speed_text_var = tk.StringVar()
+        self.detect_models_status_var = tk.StringVar(value="")
         self.solver_order = list(self.config.solver_order)
 
         outer = tk.Frame(self.window, bg=WINDOW_BG, padx=18, pady=18)
@@ -259,15 +327,38 @@ class SettingsDialog:
         ).pack(fill="x", pady=(8, 0))
 
         self._row_label(api_card, "Model").pack(anchor="w", pady=(12, 0))
+        model_row = tk.Frame(api_card, bg=CARD_BG)
+        model_row.pack(fill="x", pady=(8, 0))
         tk.Entry(
-            api_card,
+            model_row,
             textvariable=self.model_var,
             bg="#0b1620",
             fg=TEXT_MAIN,
             insertbackground=TEXT_MAIN,
             relief="flat",
             font=("Segoe UI", 10),
-        ).pack(fill="x", pady=(8, 0))
+        ).pack(side="left", fill="x", expand=True)
+        self.detect_models_button = tk.Button(
+            model_row,
+            text="Detect Models",
+            command=self._detect_models,
+            bg="#345369",
+            fg=TEXT_MAIN,
+            relief="flat",
+            padx=12,
+            pady=6,
+            font=("Segoe UI Semibold", 9),
+        )
+        self.detect_models_button.pack(side="left", padx=(8, 0))
+        tk.Label(
+            api_card,
+            textvariable=self.detect_models_status_var,
+            bg=CARD_BG,
+            fg="#79c0ff",
+            font=("Segoe UI", 9),
+            wraplength=640,
+            justify="left",
+        ).pack(anchor="w", pady=(6, 0))
 
         self._row_label(api_card, "Base URL").pack(anchor="w", pady=(12, 0))
         tk.Entry(
@@ -305,7 +396,7 @@ class SettingsDialog:
         self._row_label(solver_card, "Solver Order").pack(anchor="w")
         tk.Label(
             solver_card,
-            text="Memory answers stay first. Move the local solver steps up or down to experiment. AI still runs as the background fallback when needed.",
+            text="Memory answers stay first. Move the local solver steps up or down to experiment. If AI is first, it starts early in the background while the fast local solvers keep running.",
             bg=CARD_BG,
             fg=TEXT_SOFT,
             font=("Segoe UI", 9),
@@ -623,6 +714,136 @@ class SettingsDialog:
         )
         if path:
             self.dictionary_path_var.set(path)
+
+    def _detect_models(self) -> None:
+        provider = self.provider_var.get()
+        base_url = _normalize_provider_base_url(provider, self.base_url_var.get())
+        if not base_url:
+            messagebox.showwarning(APP_NAME, "Enter a base URL before detecting models.")
+            return
+
+        self.base_url_var.set(base_url)
+        self.detect_models_status_var.set("Detecting models from the configured endpoint...")
+        self.detect_models_button.config(state="disabled", text="Detecting...")
+        api_key = self.api_key_var.get().strip()
+        threading.Thread(
+            target=self._detect_models_worker,
+            args=(base_url, api_key),
+            name="mu-detect-models",
+            daemon=True,
+        ).start()
+
+    def _detect_models_worker(self, base_url: str, api_key: str) -> None:
+        try:
+            models = _fetch_model_candidates(base_url, api_key=api_key)
+        except Exception as exc:
+            self.window.after(0, lambda: self._finish_detect_models(error=f"{type(exc).__name__}: {exc}"))
+            return
+        self.window.after(0, lambda: self._finish_detect_models(models=models))
+
+    def _finish_detect_models(self, *, models: list[str] | None = None, error: str | None = None) -> None:
+        self.detect_models_button.config(state="normal", text="Detect Models")
+        if error:
+            self.detect_models_status_var.set(f"Model detect failed: {error}")
+            messagebox.showerror(APP_NAME, f"Could not detect models.\n\n{error}")
+            return
+
+        models = sorted(dict.fromkeys(models or []))
+        if not models:
+            self.detect_models_status_var.set("No models were returned by the endpoint.")
+            messagebox.showinfo(APP_NAME, "No models were returned by the endpoint.")
+            return
+
+        if len(models) == 1:
+            self.model_var.set(models[0])
+            self.detect_models_status_var.set(f"Detected model: {models[0]}")
+            return
+
+        self.detect_models_status_var.set(f"Detected {len(models)} models. Choose one.")
+        self._open_model_picker(models)
+
+    def _open_model_picker(self, models: list[str]) -> None:
+        dialog = tk.Toplevel(self.window)
+        dialog.title("Choose Model")
+        dialog.configure(bg=WINDOW_BG)
+        dialog.transient(self.window)
+        dialog.grab_set()
+        dialog.geometry("520x360")
+
+        container = tk.Frame(dialog, bg=WINDOW_BG, padx=16, pady=16)
+        container.pack(fill="both", expand=True)
+        tk.Label(
+            container,
+            text="Detected Models",
+            bg=WINDOW_BG,
+            fg=TEXT_MAIN,
+            font=("Segoe UI Semibold", 14),
+        ).pack(anchor="w")
+        tk.Label(
+            container,
+            text="Choose the exact model id to use for the local AI endpoint.",
+            bg=WINDOW_BG,
+            fg=TEXT_SOFT,
+            font=("Segoe UI", 9),
+        ).pack(anchor="w", pady=(4, 0))
+
+        list_frame = tk.Frame(container, bg=WINDOW_BG)
+        list_frame.pack(fill="both", expand=True, pady=(12, 0))
+        listbox = tk.Listbox(
+            list_frame,
+            bg="#0b1620",
+            fg=TEXT_MAIN,
+            selectbackground=BLUE,
+            selectforeground=TEXT_MAIN,
+            relief="flat",
+            font=("Consolas", 10),
+            activestyle="none",
+            exportselection=False,
+        )
+        scrollbar = ttk.Scrollbar(list_frame, orient="vertical", command=listbox.yview)
+        listbox.configure(yscrollcommand=scrollbar.set)
+        listbox.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        for model in models:
+            listbox.insert("end", model)
+        listbox.selection_set(0)
+        listbox.activate(0)
+
+        def choose_selected() -> None:
+            selection = listbox.curselection()
+            if not selection:
+                return
+            model = str(listbox.get(selection[0]))
+            self.model_var.set(model)
+            self.detect_models_status_var.set(f"Selected detected model: {model}")
+            dialog.destroy()
+
+        actions = tk.Frame(container, bg=WINDOW_BG)
+        actions.pack(fill="x", pady=(12, 0))
+        tk.Button(
+            actions,
+            text="Cancel",
+            command=dialog.destroy,
+            bg="#2d3f4a",
+            fg=TEXT_MAIN,
+            relief="flat",
+            padx=12,
+            pady=6,
+            font=("Segoe UI Semibold", 9),
+        ).pack(side="right")
+        tk.Button(
+            actions,
+            text="Use Selected",
+            command=choose_selected,
+            bg=GREEN,
+            fg=TEXT_MAIN,
+            relief="flat",
+            padx=12,
+            pady=6,
+            font=("Segoe UI Semibold", 9),
+        ).pack(side="right", padx=(0, 8))
+
+        listbox.bind("<Double-1>", lambda _event: choose_selected())
 
     def _render_solver_order_rows(self) -> None:
         for child in self.solver_order_frame.winfo_children():
