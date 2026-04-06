@@ -148,17 +148,8 @@ def _normalize_provider_base_url(provider: str, base_url: str) -> str:
     if provider != PROVIDER_LOCAL:
         return cleaned
     if not cleaned:
-        return "http://127.0.0.1:11434/v1"
-    lowered = cleaned.lower()
-    if lowered.endswith("/v1") or lowered.endswith("/api/v1"):
-        return cleaned
-    try:
-        parsed = urlparse(cleaned)
-    except Exception:
-        return cleaned
-    if parsed.path.strip():
-        return cleaned
-    return f"{cleaned}/v1"
+        return "http://127.0.0.1:11434"
+    return cleaned
 
 
 def _fetch_model_candidates(base_url: str, *, api_key: str = "") -> list[str]:
@@ -228,14 +219,16 @@ def _extract_model_ids(payload: object) -> list[str]:
 def _run_connection_test(*, provider: str, base_url: str, api_key: str, model: str) -> str:
     from mu_unscramble_bot.solver import OpenAIHintSolver
 
+    timeout_seconds = 35.0 if provider == PROVIDER_LOCAL else 10.0
     solver = OpenAIHintSolver(
         api_key=api_key or ("local" if provider == PROVIDER_LOCAL else ""),
         model=model,
         base_url=base_url,
         http_referer="http://localhost" if provider == PROVIDER_OPENROUTER else None,
         app_title=APP_NAME,
+        request_timeout_seconds=timeout_seconds,
     )
-    result = solver.startup_check(prompt="What is 2+2? Reply with only 4.", timeout_seconds=10.0)
+    result = solver.startup_check(prompt="What is 2+2? Reply with only 4.", timeout_seconds=timeout_seconds)
     if not result.ok:
         raise RuntimeError(result.error or "The provider returned an empty response.")
     return f"Connected to {result.provider} using {result.model}. Reply: {result.reply}"
@@ -421,7 +414,7 @@ class SettingsDialog:
         ).pack(anchor="w", pady=(12, 0))
         tk.Label(
             api_card,
-            text="For Ollama over LAN, a URL like http://192.168.1.42:11434 will be normalized to /v1 automatically.",
+            text="For Ollama over LAN, enter the server root URL like http://192.168.1.42:11434 . The app will try both OpenAI-style and native Ollama endpoints.",
             bg=CARD_BG,
             fg=TEXT_SOFT,
             font=("Segoe UI", 9),
@@ -714,14 +707,14 @@ class SettingsDialog:
     def _apply_provider_preset(self, initial: bool = False) -> None:
         provider = self.provider_var.get()
         if provider == PROVIDER_OPENROUTER:
-            if initial or not self.base_url_var.get().strip():
+            if not self.base_url_var.get().strip():
                 self.base_url_var.set("https://openrouter.ai/api/v1")
-            if initial or not self.model_var.get().strip():
+            if not self.model_var.get().strip():
                 self.model_var.set("qwen/qwen3.6-plus:free")
         elif provider == PROVIDER_LOCAL:
-            if initial or not self.base_url_var.get().strip():
-                self.base_url_var.set("http://127.0.0.1:11434/v1")
-            if initial or not self.model_var.get().strip():
+            if not self.base_url_var.get().strip():
+                self.base_url_var.set("http://127.0.0.1:11434")
+            if not self.model_var.get().strip():
                 self.model_var.set("llama3.1")
             if initial and not self.api_key_var.get().strip():
                 self.api_key_var.set("local")

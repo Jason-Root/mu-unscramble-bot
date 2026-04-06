@@ -7,6 +7,9 @@ import json
 import re
 from pathlib import Path
 from typing import Protocol
+import urllib.error
+import urllib.request
+from urllib.parse import urlparse
 
 from openai import OpenAI
 
@@ -434,15 +437,51 @@ class OpenAIHintSolver:
             # Many local OpenAI-compatible servers expose only chat/completions.
             pass
 
-        return self._request_chat_text(
-            instructions=instructions,
-            prompt=prompt,
-            max_output_tokens=max_output_tokens,
-            timeout_seconds=timeout_seconds,
-        )
+        try:
+            return self._request_chat_text(
+                instructions=instructions,
+                prompt=prompt,
+                max_output_tokens=max_output_tokens,
+                timeout_seconds=timeout_seconds,
+            )
+        except Exception:
+            pass
+
+        if self._is_local_like():
+            return self._request_ollama_native_text(
+                instructions=instructions,
+                prompt=prompt,
+                timeout_seconds=timeout_seconds,
+            )
+
+        return ""
 
     def _is_openrouter(self) -> bool:
         return bool(self.base_url and "openrouter.ai" in self.base_url.lower())
+
+    def _is_local_like(self) -> bool:
+        if not self.base_url:
+            return False
+        try:
+            hostname = (urlparse(self.base_url).hostname or "").lower()
+        except Exception:
+            return False
+        if not hostname:
+            return False
+        if hostname in {"localhost", "::1"} or hostname.startswith("127."):
+            return True
+        if hostname.startswith("192.168.") or hostname.startswith("10."):
+            return True
+        if hostname.startswith("172."):
+            parts = hostname.split(".")
+            if len(parts) >= 2:
+                try:
+                    second = int(parts[1])
+                except Exception:
+                    second = -1
+                if 16 <= second <= 31:
+                    return True
+        return False
 
     def _request_openrouter_text(
         self,
@@ -504,6 +543,44 @@ class OpenAIHintSolver:
         message = choice.message if choice else None
         content = (message.content or "").strip() if message else ""
         return content
+
+    def _request_ollama_native_text(
+        self,
+        *,
+        instructions: str,
+        prompt: str,
+        timeout_seconds: float | None = None,
+    ) -> str:
+        base_root = self._native_api_root()
+        url = f"{base_root}/api/generate"
+        payload = {
+            "model": self.model,
+            "prompt": f"{instructions}\n\n{prompt}",
+            "stream": False,
+        }
+        request = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.api_key}",
+            },
+            method="POST",
+        )
+        with urllib.request.urlopen(request, timeout=timeout_seconds or self.request_timeout_seconds) as response:
+            result = json.loads(response.read().decode("utf-8"))
+        return str(result.get("response", "") or "").strip()
+
+    def _native_api_root(self) -> str:
+        if not self.base_url:
+            return ""
+        cleaned = self.base_url.rstrip("/")
+        lowered = cleaned.lower()
+        if lowered.endswith("/v1"):
+            return cleaned[:-3].rstrip("/")
+        if lowered.endswith("/api/v1"):
+            return cleaned[:-7].rstrip("/")
+        return cleaned
 
 
 class SolverChain:
