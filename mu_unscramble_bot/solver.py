@@ -615,32 +615,45 @@ def build_solver_chain(config: BotConfig) -> SolverChain:
         )
 
     capital_solver = CapitalCitySolver()
-    solvers: list[Solver] = [capital_solver]
+    available_solvers: dict[str, Solver] = {
+        "capital-city": capital_solver,
+    }
 
     if config.local_dictionary_enabled:
-        solvers.append(
-            LocalAnagramSolver(
-                max_words=config.local_dictionary_max_words,
-                custom_dictionary_path=Path(config.local_dictionary_path),
-                unique_only=config.local_dictionary_unique_only,
-                seed_answers=tuple(question_memory.known_answers()) if question_memory is not None else (),
-                extra_words=tuple(sorted(set(capital_solver.capitals_by_country.values()))),
-            )
+        available_solvers["anagram"] = LocalAnagramSolver(
+            max_words=config.local_dictionary_max_words,
+            custom_dictionary_path=Path(config.local_dictionary_path),
+            unique_only=config.local_dictionary_unique_only,
+            seed_answers=tuple(question_memory.known_answers()) if question_memory is not None else (),
+            extra_words=tuple(sorted(set(capital_solver.capitals_by_country.values()))),
         )
 
     if config.openai_api_key:
-        solvers.append(
-            OpenAIHintSolver(
-                api_key=config.openai_api_key,
-                model=config.openai_model,
-                reasoning_effort=config.openai_reasoning_effort,
-                request_timeout_seconds=config.online_solver_timeout_seconds,
-                send_hint=config.openai_send_hint,
-                base_url=config.openai_base_url,
-                http_referer=config.openai_http_referer,
-                app_title=config.openai_app_title,
-            )
+        available_solvers["openai"] = OpenAIHintSolver(
+            api_key=config.openai_api_key,
+            model=config.openai_model,
+            reasoning_effort=config.openai_reasoning_effort,
+            request_timeout_seconds=config.online_solver_timeout_seconds,
+            send_hint=config.openai_send_hint,
+            base_url=config.openai_base_url,
+            http_referer=config.openai_http_referer,
+            app_title=config.openai_app_title,
         )
+
+    ordered_solver_ids = list(config.solver_order)
+    solvers: list[Solver] = []
+    seen_solver_ids: set[str] = set()
+    for solver_id in ordered_solver_ids:
+        solver = available_solvers.get(solver_id)
+        if solver is None or solver_id in seen_solver_ids:
+            continue
+        solvers.append(solver)
+        seen_solver_ids.add(solver_id)
+
+    for solver_id, solver in available_solvers.items():
+        if solver_id in seen_solver_ids:
+            continue
+        solvers.append(solver)
 
     return SolverChain(
         solvers=solvers,

@@ -9,9 +9,17 @@ import traceback
 import tkinter as tk
 from tkinter import font as tkfont
 from tkinter import filedialog, messagebox, ttk
+from urllib.parse import urlparse
 
 from mu_unscramble_bot.bot import MuUnscrambleBot
-from mu_unscramble_bot.config import BotConfig, load_config, load_env_settings, save_config, save_env_settings
+from mu_unscramble_bot.config import (
+    BotConfig,
+    DEFAULT_SOLVER_ORDER,
+    load_config,
+    load_env_settings,
+    save_config,
+    save_env_settings,
+)
 from mu_unscramble_bot.overlay import OverlayPayload
 from mu_unscramble_bot.paths import APP_NAME, is_frozen, user_data_dir
 from mu_unscramble_bot.privilege import is_current_process_elevated
@@ -41,6 +49,11 @@ PROVIDER_DISABLED = "Disabled"
 PROVIDER_OPENROUTER = "OpenRouter"
 PROVIDER_LOCAL = "Local OpenAI-Compatible"
 PROVIDER_CUSTOM = "Custom OpenAI-Compatible"
+SOLVER_LABELS = {
+    "capital-city": "Capital-City Clues",
+    "anagram": "Dictionary Anagram",
+    "openai": "AI Fallback",
+}
 
 
 @dataclass(slots=True)
@@ -95,11 +108,54 @@ def _detect_provider(config: BotConfig) -> str:
         return PROVIDER_DISABLED
     if "openrouter.ai" in base_url:
         return PROVIDER_OPENROUTER
-    if "127.0.0.1" in base_url or "localhost" in base_url:
+    if _is_local_base_url(base_url):
         return PROVIDER_LOCAL
     if base_url:
         return PROVIDER_CUSTOM
     return PROVIDER_DISABLED
+
+
+def _is_local_base_url(base_url: str) -> bool:
+    if not base_url:
+        return False
+    try:
+        hostname = (urlparse(base_url).hostname or "").lower()
+    except Exception:
+        hostname = ""
+    if not hostname:
+        return False
+    if hostname in {"localhost", "::1"} or hostname.startswith("127."):
+        return True
+    if hostname.startswith("192.168.") or hostname.startswith("10."):
+        return True
+    if hostname.startswith("172."):
+        parts = hostname.split(".")
+        if len(parts) >= 2:
+            try:
+                second = int(parts[1])
+            except Exception:
+                second = -1
+            if 16 <= second <= 31:
+                return True
+    return False
+
+
+def _normalize_provider_base_url(provider: str, base_url: str) -> str:
+    cleaned = base_url.strip().rstrip("/")
+    if provider != PROVIDER_LOCAL:
+        return cleaned
+    if not cleaned:
+        return "http://127.0.0.1:11434/v1"
+    lowered = cleaned.lower()
+    if lowered.endswith("/v1") or lowered.endswith("/api/v1"):
+        return cleaned
+    try:
+        parsed = urlparse(cleaned)
+    except Exception:
+        return cleaned
+    if parsed.path.strip():
+        return cleaned
+    return f"{cleaned}/v1"
 
 
 class SettingsDialog:
@@ -130,7 +186,9 @@ class SettingsDialog:
         self.dictionary_enabled_var = tk.BooleanVar(value=self.config.local_dictionary_enabled)
         self.dictionary_unique_only_var = tk.BooleanVar(value=self.config.local_dictionary_unique_only)
         self.dictionary_path_var = tk.StringVar(value=self.config.local_dictionary_path)
+        self.send_hint_var = tk.BooleanVar(value=self.config.openai_send_hint)
         self.speed_text_var = tk.StringVar()
+        self.solver_order = list(self.config.solver_order)
 
         outer = tk.Frame(self.window, bg=WINDOW_BG, padx=18, pady=18)
         outer.pack(fill="both", expand=True)
@@ -221,6 +279,42 @@ class SettingsDialog:
             relief="flat",
             font=("Segoe UI", 10),
         ).pack(fill="x", pady=(8, 0))
+        tk.Checkbutton(
+            api_card,
+            text="Send the full hint/question to AI instead of only the scramble letters",
+            variable=self.send_hint_var,
+            bg=CARD_BG,
+            fg=TEXT_MAIN,
+            activebackground=CARD_BG,
+            activeforeground=TEXT_MAIN,
+            selectcolor="#0b1620",
+            font=("Segoe UI", 10),
+        ).pack(anchor="w", pady=(12, 0))
+        tk.Label(
+            api_card,
+            text="For Ollama over LAN, a URL like http://192.168.1.42:11434 will be normalized to /v1 automatically.",
+            bg=CARD_BG,
+            fg=TEXT_SOFT,
+            font=("Segoe UI", 9),
+            wraplength=640,
+            justify="left",
+        ).pack(anchor="w", pady=(6, 0))
+
+        solver_card = self._card(container)
+        solver_card.pack(fill="x", pady=(16, 0))
+        self._row_label(solver_card, "Solver Order").pack(anchor="w")
+        tk.Label(
+            solver_card,
+            text="Memory answers stay first. Move the local solver steps up or down to experiment. AI still runs as the background fallback when needed.",
+            bg=CARD_BG,
+            fg=TEXT_SOFT,
+            font=("Segoe UI", 9),
+            wraplength=640,
+            justify="left",
+        ).pack(anchor="w", pady=(4, 0))
+        self.solver_order_frame = tk.Frame(solver_card, bg=CARD_BG)
+        self.solver_order_frame.pack(fill="x", pady=(10, 0))
+        self._render_solver_order_rows()
 
         speed_card = self._card(container)
         speed_card.pack(fill="x", pady=(16, 0))
@@ -530,10 +624,66 @@ class SettingsDialog:
         if path:
             self.dictionary_path_var.set(path)
 
+    def _render_solver_order_rows(self) -> None:
+        for child in self.solver_order_frame.winfo_children():
+            child.destroy()
+
+        for index, solver_id in enumerate(self.solver_order):
+            row = tk.Frame(self.solver_order_frame, bg="#0b1620", padx=10, pady=8)
+            row.pack(fill="x", pady=(0, 6))
+            tk.Label(
+                row,
+                text=f"{index + 1}.",
+                bg="#0b1620",
+                fg="#79c0ff",
+                font=("Segoe UI Semibold", 10),
+                width=3,
+                anchor="w",
+            ).pack(side="left")
+            tk.Label(
+                row,
+                text=SOLVER_LABELS.get(solver_id, solver_id),
+                bg="#0b1620",
+                fg=TEXT_MAIN,
+                font=("Segoe UI", 10),
+                anchor="w",
+            ).pack(side="left", fill="x", expand=True)
+            tk.Button(
+                row,
+                text="Up",
+                command=lambda idx=index: self._move_solver_row(idx, -1),
+                state="normal" if index > 0 else "disabled",
+                bg="#2d5f41",
+                fg=TEXT_MAIN,
+                relief="flat",
+                padx=10,
+                pady=4,
+                font=("Segoe UI Semibold", 9),
+            ).pack(side="left", padx=(8, 4))
+            tk.Button(
+                row,
+                text="Down",
+                command=lambda idx=index: self._move_solver_row(idx, 1),
+                state="normal" if index < len(self.solver_order) - 1 else "disabled",
+                bg="#345369",
+                fg=TEXT_MAIN,
+                relief="flat",
+                padx=10,
+                pady=4,
+                font=("Segoe UI Semibold", 9),
+            ).pack(side="left")
+
+    def _move_solver_row(self, index: int, delta: int) -> None:
+        new_index = index + delta
+        if index < 0 or new_index < 0 or index >= len(self.solver_order) or new_index >= len(self.solver_order):
+            return
+        self.solver_order[index], self.solver_order[new_index] = self.solver_order[new_index], self.solver_order[index]
+        self._render_solver_order_rows()
+
     def _save(self) -> None:
         provider = self.provider_var.get()
         model = self.model_var.get().strip()
-        base_url = self.base_url_var.get().strip()
+        base_url = _normalize_provider_base_url(provider, self.base_url_var.get())
         api_key = self.api_key_var.get().strip()
         command_word = self.command_word_var.get().strip().lstrip("/")
 
@@ -574,6 +724,8 @@ class SettingsDialog:
         config.local_dictionary_enabled = self.dictionary_enabled_var.get()
         config.local_dictionary_unique_only = self.dictionary_unique_only_var.get()
         config.local_dictionary_path = self.dictionary_path_var.get().strip() or config.local_dictionary_path
+        config.openai_send_hint = self.send_hint_var.get()
+        config.solver_order = list(self.solver_order or DEFAULT_SOLVER_ORDER)
         save_config(config)
 
         if provider == PROVIDER_DISABLED:

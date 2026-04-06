@@ -12,6 +12,7 @@ from mu_unscramble_bot.paths import default_config_path, default_env_path, ensur
 
 
 DEFAULT_CONFIG_PATH = default_config_path()
+DEFAULT_SOLVER_ORDER = ("capital-city", "anagram", "openai")
 
 
 @dataclass(slots=True)
@@ -75,6 +76,7 @@ class BotConfig:
     local_dictionary_unique_only: bool = True
     local_dictionary_max_words: int = 250000
     local_dictionary_path: str = "data/local_dictionary.txt"
+    solver_order: list[str] | tuple[str, ...] = tuple(DEFAULT_SOLVER_ORDER)
     openai_model: str = "qwen/qwen3.6-plus:free"
     openai_reasoning_effort: str = ""
     online_solver_timeout_seconds: float = 2.0
@@ -111,6 +113,7 @@ def load_config(path: str | Path | None = None) -> BotConfig:
         data["yellow_hsv_upper"] = tuple(data["yellow_hsv_upper"])
 
     config = BotConfig(**data)
+    config.solver_order = _normalize_solver_order(config.solver_order)
     if "active_capture_interval_seconds" not in data:
         config.active_capture_interval_seconds = config.capture_interval_seconds
     if "idle_capture_interval_seconds" not in data:
@@ -209,6 +212,7 @@ def save_config(config: BotConfig, path: str | Path | None = None) -> Path:
         "local_dictionary_unique_only": config.local_dictionary_unique_only,
         "local_dictionary_max_words": config.local_dictionary_max_words,
         "local_dictionary_path": config.local_dictionary_path,
+        "solver_order": list(_normalize_solver_order(config.solver_order)),
         "openai_model": config.openai_model,
         "openai_reasoning_effort": config.openai_reasoning_effort,
         "online_solver_timeout_seconds": config.online_solver_timeout_seconds,
@@ -266,3 +270,18 @@ def save_env_settings(settings: dict[str, str | None], path: str | Path | None =
         lines.append(f"{key}={current[key]}")
     env_path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
     return env_path
+
+
+def _normalize_solver_order(value: list[str] | tuple[str, ...] | None) -> list[str]:
+    normalized: list[str] = []
+    seen: set[str] = set()
+    for item in value or ():
+        solver_id = str(item).strip().lower()
+        if solver_id not in DEFAULT_SOLVER_ORDER or solver_id in seen:
+            continue
+        normalized.append(solver_id)
+        seen.add(solver_id)
+    for solver_id in DEFAULT_SOLVER_ORDER:
+        if solver_id not in seen:
+            normalized.append(solver_id)
+    return normalized

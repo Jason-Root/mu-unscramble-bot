@@ -66,6 +66,11 @@
   "local_dictionary_unique_only": true,
   "local_dictionary_max_words": 250000,
   "local_dictionary_path": "data\\local_dictionary.txt",
+  "solver_order": [
+    "capital-city",
+    "anagram",
+    "openai"
+  ],
   "openai_model": "qwen/qwen3.6-plus:free",
   "openai_reasoning_effort": "",
   "online_solver_timeout_seconds": 1.8,
