@@ -26,6 +26,7 @@ from mu_unscramble_bot.config import (
 from mu_unscramble_bot.overlay import OverlayPayload
 from mu_unscramble_bot.paths import APP_NAME, is_frozen, user_data_dir
 from mu_unscramble_bot.privilege import is_current_process_elevated
+from mu_unscramble_bot.net import urlopen
 from mu_unscramble_bot.updater import (
     UpdateCheckResult,
     check_for_updates,
@@ -178,7 +179,7 @@ def _fetch_model_candidates(base_url: str, *, api_key: str = "") -> list[str]:
     for url in dict.fromkeys(candidate_urls):
         try:
             request = urllib.request.Request(url, headers=headers)
-            with urllib.request.urlopen(request, timeout=8.0) as response:
+            with urlopen(request, timeout=8.0) as response:
                 payload = json.loads(response.read().decode("utf-8"))
         except urllib.error.HTTPError as exc:
             errors.append(f"{url} -> HTTP {exc.code}")

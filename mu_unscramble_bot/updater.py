@@ -18,6 +18,7 @@ import webbrowser
 from packaging.version import InvalidVersion, Version
 
 from mu_unscramble_bot import __version__
+from mu_unscramble_bot.net import urlopen
 from mu_unscramble_bot.paths import is_frozen, user_data_dir
 
 UPDATE_FILES_BRANCH = "update-files"
@@ -84,7 +85,7 @@ def check_for_updates(repository: str, *, timeout_seconds: float = 8.0) -> Updat
         },
     )
     try:
-        with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
+        with urlopen(request, timeout=timeout_seconds) as response:
             payload = json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
         return UpdateCheckResult(
@@ -584,7 +585,7 @@ def _download_json(url: str, *, timeout_seconds: float) -> dict[str, object]:
             "User-Agent": "mu-unscramble-bot",
         },
     )
-    with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
+    with urlopen(request, timeout=timeout_seconds) as response:
         payload = json.loads(response.read().decode("utf-8"))
     if not isinstance(payload, dict):
         raise RuntimeError("Expected a JSON object from the update server.")
@@ -600,7 +601,7 @@ def _download_binary(url: str, destination: Path, *, timeout_seconds: float) -> 
             "User-Agent": "mu-unscramble-bot",
         },
     )
-    with urllib.request.urlopen(request, timeout=timeout_seconds) as response, destination.open("wb") as handle:
+    with urlopen(request, timeout=timeout_seconds) as response, destination.open("wb") as handle:
         while True:
             chunk = response.read(1024 * 256)
             if not chunk:

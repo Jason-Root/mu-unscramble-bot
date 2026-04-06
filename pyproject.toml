@@ -4,11 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mu-unscramble-bot"
-version = "0.3.22"
+version = "0.3.23"
 description = "Screen-reading MU Online helper that watches the center yellow text, solves the puzzle, and can auto-submit the answer."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+  "certifi>=2025.1.31,<2027",
   "geonamescache>=3.0,<4",
   "mss>=10,<11",
   "numpy>=2.4,<3",

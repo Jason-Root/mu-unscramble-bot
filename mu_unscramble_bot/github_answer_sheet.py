@@ -7,6 +7,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+from mu_unscramble_bot.net import urlopen
 
 API_BASE_URL = "https://api.github.com"
 
@@ -35,7 +36,7 @@ class GitHubAnswerSheetClient:
         url = self._contents_url(with_ref=True)
         request = urllib.request.Request(url, headers=self._headers())
         try:
-            with urllib.request.urlopen(request, timeout=10.0) as response:
+            with urlopen(request, timeout=10.0) as response:
                 payload = json.loads(response.read().decode("utf-8"))
         except urllib.error.HTTPError as exc:
             if exc.code == 404:
@@ -65,7 +66,7 @@ class GitHubAnswerSheetClient:
             headers=self._headers(),
             method="PUT",
         )
-        with urllib.request.urlopen(request, timeout=15.0) as response:
+        with urlopen(request, timeout=15.0) as response:
             result = json.loads(response.read().decode("utf-8"))
         content_info = result.get("content", {}) if isinstance(result, dict) else {}
         if isinstance(content_info, dict):

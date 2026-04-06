@@ -1,5 +1,5 @@
 param(
-    [string]$Version = "0.3.22",
+    [string]$Version = "0.3.23",
     [string]$PythonPath = ""
 )
 
@@ -40,6 +40,7 @@ if (Test-Path $releaseRoot) {
     --add-data "config.json;." `
     --add-data ".env.example;." `
     --add-data "data;data" `
+    --collect-data certifi `
     --collect-all rapidocr_onnxruntime `
     --collect-all pygetwindow `
     "mu_unscramble_bot\\__main__.py"
