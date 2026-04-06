@@ -425,8 +425,21 @@ class OpenAIHintSolver:
         if timeout_seconds is not None:
             request["timeout"] = timeout_seconds
 
-        response = self.client.responses.create(**request)
-        return getattr(response, "output_text", "").strip()
+        try:
+            response = self.client.responses.create(**request)
+            text = getattr(response, "output_text", "").strip()
+            if text:
+                return text
+        except Exception:
+            # Many local OpenAI-compatible servers expose only chat/completions.
+            pass
+
+        return self._request_chat_text(
+            instructions=instructions,
+            prompt=prompt,
+            max_output_tokens=max_output_tokens,
+            timeout_seconds=timeout_seconds,
+        )
 
     def _is_openrouter(self) -> bool:
         return bool(self.base_url and "openrouter.ai" in self.base_url.lower())
@@ -464,6 +477,33 @@ class OpenAIHintSolver:
             token_budget *= 2
 
         return ""
+
+    def _request_chat_text(
+        self,
+        *,
+        instructions: str,
+        prompt: str,
+        max_output_tokens: int,
+        timeout_seconds: float | None = None,
+    ) -> str:
+        token_budget = max(96, max_output_tokens)
+        request: dict[str, object] = {
+            "model": self.model,
+            "messages": [
+                {"role": "system", "content": instructions},
+                {"role": "user", "content": prompt},
+            ],
+            "temperature": 0,
+        }
+        request["max_tokens"] = token_budget
+        if timeout_seconds is not None:
+            request["timeout"] = timeout_seconds
+
+        completion = self.client.chat.completions.create(**request)
+        choice = completion.choices[0] if completion.choices else None
+        message = choice.message if choice else None
+        content = (message.content or "").strip() if message else ""
+        return content
 
 
 class SolverChain:
