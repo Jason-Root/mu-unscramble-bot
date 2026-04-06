@@ -225,6 +225,22 @@ def _extract_model_ids(payload: object) -> list[str]:
     return models
 
 
+def _run_connection_test(*, provider: str, base_url: str, api_key: str, model: str) -> str:
+    from mu_unscramble_bot.solver import OpenAIHintSolver
+
+    solver = OpenAIHintSolver(
+        api_key=api_key or ("local" if provider == PROVIDER_LOCAL else ""),
+        model=model,
+        base_url=base_url,
+        http_referer="http://localhost" if provider == PROVIDER_OPENROUTER else None,
+        app_title=APP_NAME,
+    )
+    result = solver.startup_check(prompt="What is 2+2? Reply with only 4.", timeout_seconds=10.0)
+    if not result.ok:
+        raise RuntimeError(result.error or "The provider returned an empty response.")
+    return f"Connected to {result.provider} using {result.model}. Reply: {result.reply}"
+
+
 class SettingsDialog:
     def __init__(self, parent: "DesktopApp") -> None:
         self.parent = parent
@@ -256,6 +272,7 @@ class SettingsDialog:
         self.send_hint_var = tk.BooleanVar(value=self.config.openai_send_hint)
         self.speed_text_var = tk.StringVar()
         self.detect_models_status_var = tk.StringVar(value="")
+        self.test_connection_status_var = tk.StringVar(value="")
         self.solver_order = list(self.config.solver_order)
 
         outer = tk.Frame(self.window, bg=WINDOW_BG, padx=18, pady=18)
@@ -350,6 +367,18 @@ class SettingsDialog:
             font=("Segoe UI Semibold", 9),
         )
         self.detect_models_button.pack(side="left", padx=(8, 0))
+        self.test_connection_button = tk.Button(
+            model_row,
+            text="Test Connection",
+            command=self._test_connection,
+            bg="#2d5f41",
+            fg=TEXT_MAIN,
+            relief="flat",
+            padx=12,
+            pady=6,
+            font=("Segoe UI Semibold", 9),
+        )
+        self.test_connection_button.pack(side="left", padx=(8, 0))
         tk.Label(
             api_card,
             textvariable=self.detect_models_status_var,
@@ -359,6 +388,15 @@ class SettingsDialog:
             wraplength=640,
             justify="left",
         ).pack(anchor="w", pady=(6, 0))
+        tk.Label(
+            api_card,
+            textvariable=self.test_connection_status_var,
+            bg=CARD_BG,
+            fg="#7ee787",
+            font=("Segoe UI", 9),
+            wraplength=640,
+            justify="left",
+        ).pack(anchor="w", pady=(2, 0))
 
         self._row_label(api_card, "Base URL").pack(anchor="w", pady=(12, 0))
         tk.Entry(
@@ -733,6 +771,32 @@ class SettingsDialog:
             daemon=True,
         ).start()
 
+    def _test_connection(self) -> None:
+        provider = self.provider_var.get()
+        if provider == PROVIDER_DISABLED:
+            messagebox.showwarning(APP_NAME, "Choose an API provider first.")
+            return
+
+        model = self.model_var.get().strip()
+        base_url = _normalize_provider_base_url(provider, self.base_url_var.get())
+        api_key = self.api_key_var.get().strip()
+        if not model:
+            messagebox.showwarning(APP_NAME, "Enter a model name before testing.")
+            return
+        if not base_url:
+            messagebox.showwarning(APP_NAME, "Enter a base URL before testing.")
+            return
+
+        self.base_url_var.set(base_url)
+        self.test_connection_status_var.set("Testing API connection...")
+        self.test_connection_button.config(state="disabled", text="Testing...")
+        threading.Thread(
+            target=self._test_connection_worker,
+            args=(provider, base_url, api_key, model),
+            name="mu-test-connection",
+            daemon=True,
+        ).start()
+
     def _detect_models_worker(self, base_url: str, api_key: str) -> None:
         try:
             models = _fetch_model_candidates(base_url, api_key=api_key)
@@ -761,6 +825,27 @@ class SettingsDialog:
 
         self.detect_models_status_var.set(f"Detected {len(models)} models. Choose one.")
         self._open_model_picker(models)
+
+    def _test_connection_worker(self, provider: str, base_url: str, api_key: str, model: str) -> None:
+        try:
+            result_text = _run_connection_test(
+                provider=provider,
+                base_url=base_url,
+                api_key=api_key,
+                model=model,
+            )
+        except Exception as exc:
+            self.window.after(0, lambda: self._finish_connection_test(error=f"{type(exc).__name__}: {exc}"))
+            return
+        self.window.after(0, lambda: self._finish_connection_test(result=result_text))
+
+    def _finish_connection_test(self, *, result: str | None = None, error: str | None = None) -> None:
+        self.test_connection_button.config(state="normal", text="Test Connection")
+        if error:
+            self.test_connection_status_var.set(f"Connection test failed: {error}")
+            messagebox.showerror(APP_NAME, f"Connection test failed.\n\n{error}")
+            return
+        self.test_connection_status_var.set(result or "Connection test passed.")
 
     def _open_model_picker(self, models: list[str]) -> None:
         dialog = tk.Toplevel(self.window)

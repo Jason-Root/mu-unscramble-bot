@@ -55,6 +55,7 @@ class MuUnscrambleBot:
         self._recent_ocr_lines: deque[list[str]] = deque(maxlen=max(1, config.ocr_history_frames))
         self._completed_rounds: dict[str, float] = {}
         self._submitted_answers_by_round: dict[str, dict[str, float]] = {}
+        self._online_attempts_by_round: dict[str, float] = {}
         self._online_executor: ThreadPoolExecutor | None = None
         if self.solver.has_online_solver():
             self._online_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="mu-online-solver")
@@ -134,8 +135,10 @@ class MuUnscrambleBot:
             self._update_idle_overlay(live_ocr_text, api_status=self._api_status_text())
             return None, None
 
-        self._prune_completed_rounds(now=time.monotonic())
-        self._prune_submitted_answers(now=time.monotonic())
+        now = time.monotonic()
+        self._prune_completed_rounds(now=now)
+        self._prune_submitted_answers(now=now)
+        self._prune_online_attempts(now=now)
         if self._is_round_completed(puzzle):
             self._cancel_pending_online_if_matches(puzzle.round_key)
             self._update_overlay_from_puzzle(
@@ -147,7 +150,6 @@ class MuUnscrambleBot:
             )
             return puzzle, None
 
-        now = time.monotonic()
         last_solved = self._last_solved_at.get(puzzle.signature, 0.0)
         if now - last_solved < self.config.submission_cooldown_seconds:
             self._update_overlay_from_puzzle(
@@ -180,7 +182,7 @@ class MuUnscrambleBot:
 
         if (
             self._pending_online_solve is None
-            and self._should_start_online_solve()
+            and self._should_start_online_solve(puzzle)
             and self.solver.prefers_early_online()
         ):
             self._start_online_solve(puzzle)
@@ -242,7 +244,7 @@ class MuUnscrambleBot:
             not solution
             and not consumed_online_result
             and self._pending_online_solve is None
-            and self._should_start_online_solve()
+            and self._should_start_online_solve(puzzle)
         ):
             self._start_online_solve(puzzle)
             self._update_overlay_from_puzzle(
@@ -652,11 +654,22 @@ class MuUnscrambleBot:
         for round_key in stale_rounds:
             self._submitted_answers_by_round.pop(round_key, None)
 
-    def _should_start_online_solve(self) -> bool:
+    def _prune_online_attempts(self, *, now: float) -> None:
+        cutoff = max(45.0, self.config.pending_api_submit_grace_seconds * 4)
+        stale_rounds = [
+            round_key
+            for round_key, started_at in self._online_attempts_by_round.items()
+            if (now - started_at) >= cutoff
+        ]
+        for round_key in stale_rounds:
+            self._online_attempts_by_round.pop(round_key, None)
+
+    def _should_start_online_solve(self, puzzle: Puzzle) -> bool:
         return (
             not self.config.memory_only_mode
             and self.config.openai_api_key is not None
             and self._online_executor is not None
+            and puzzle.round_key not in self._online_attempts_by_round
         )
 
     def _start_online_solve(self, puzzle: Puzzle) -> None:
@@ -664,6 +677,11 @@ class MuUnscrambleBot:
             return
         self._last_round_activity_at = time.monotonic()
         self._last_active_round_number = puzzle.round_number
+        self._online_attempts_by_round[puzzle.round_key] = time.monotonic()
+        self._log(
+            f"Starting background AI attempt for round {puzzle.round_number}: "
+            f"{puzzle.scrambled_word}"
+        )
         future = self._online_executor.submit(self.solver.solve_online, puzzle)
         self._pending_online_solve = PendingOnlineSolve(
             puzzle=puzzle,
@@ -681,10 +699,17 @@ class MuUnscrambleBot:
         if self._is_round_completed(current_puzzle):
             return None
         try:
-            return pending.future.result()
+            result = pending.future.result()
         except Exception as exc:
             self._log(f"Online solver failed: {type(exc).__name__}: {exc}")
             return None
+        if result is None:
+            self._log(
+                f"Background AI returned no usable answer for round {current_puzzle.round_number}. "
+                f"It will not retry this same round."
+            )
+            return None
+        return result
 
     def _cancel_pending_online_if_matches(self, round_key: str) -> None:
         pending = self._pending_online_solve
